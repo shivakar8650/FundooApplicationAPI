@@ -11,3 +11,5 @@ C:\Users\prabhakar\source\repos\FundooApp\BusinessLayer\obj\Debug\netcoreapp3.1\
 C:\Users\prabhakar\source\repos\FundooApp\BusinessLayer\obj\Debug\netcoreapp3.1\BusinessLayer.csproj.CopyComplete
 C:\Users\prabhakar\source\repos\FundooApp\BusinessLayer\obj\Debug\netcoreapp3.1\BusinessLayer.dll
 C:\Users\prabhakar\source\repos\FundooApp\BusinessLayer\obj\Debug\netcoreapp3.1\BusinessLayer.pdb
+C:\Users\prabhakar\source\repos\FundooApp\BusinessLayer\bin\Debug\netcoreapp3.1\CommonLayer.dll
+C:\Users\prabhakar\source\repos\FundooApp\BusinessLayer\bin\Debug\netcoreapp3.1\CommonLayer.pdb

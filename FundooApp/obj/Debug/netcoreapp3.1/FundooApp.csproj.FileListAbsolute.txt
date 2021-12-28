@@ -64,3 +64,13 @@ C:\Users\prabhakar\source\repos\FundooApp\FundooApp\bin\Debug\netcoreapp3.1\Repo
 C:\Users\prabhakar\source\repos\FundooApp\FundooApp\bin\Debug\netcoreapp3.1\BusinessLayer.pdb
 C:\Users\prabhakar\source\repos\FundooApp\FundooApp\bin\Debug\netcoreapp3.1\RepositoryLayer.pdb
 C:\Users\prabhakar\source\repos\FundooApp\FundooApp\obj\Debug\netcoreapp3.1\FundooApp.csproj.CopyComplete
+C:\Users\prabhakar\source\repos\FundooApp\FundooApp\bin\Debug\netcoreapp3.1\CommonLayer.dll
+C:\Users\prabhakar\source\repos\FundooApp\FundooApp\bin\Debug\netcoreapp3.1\CommonLayer.pdb
+C:\Users\prabhakar\source\repos\FundooApp\FundooApp\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\prabhakar\source\repos\FundooApp\FundooApp\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\prabhakar\source\repos\FundooApp\FundooApp\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
+C:\Users\prabhakar\source\repos\FundooApp\FundooApp\bin\Debug\netcoreapp3.1\Microsoft.OpenApi.dll
+C:\Users\prabhakar\source\repos\FundooApp\FundooApp\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\prabhakar\source\repos\FundooApp\FundooApp\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\prabhakar\source\repos\FundooApp\FundooApp\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\prabhakar\source\repos\FundooApp\FundooApp\obj\Debug\netcoreapp3.1\FundooApp.MvcApplicationPartsAssemblyInfo.cs
