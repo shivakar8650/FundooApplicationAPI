@@ -1,0 +1,10 @@
+C:\Users\prabhakar\source\repos\FundooApp\RepositoryLayer\bin\Debug\netcoreapp3.1\RepositoryLayer.deps.json
+C:\Users\prabhakar\source\repos\FundooApp\RepositoryLayer\bin\Debug\netcoreapp3.1\RepositoryLayer.dll
+C:\Users\prabhakar\source\repos\FundooApp\RepositoryLayer\bin\Debug\netcoreapp3.1\RepositoryLayer.pdb
+C:\Users\prabhakar\source\repos\FundooApp\RepositoryLayer\obj\Debug\netcoreapp3.1\RepositoryLayer.csproj.AssemblyReference.cache
+C:\Users\prabhakar\source\repos\FundooApp\RepositoryLayer\obj\Debug\netcoreapp3.1\RepositoryLayer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\prabhakar\source\repos\FundooApp\RepositoryLayer\obj\Debug\netcoreapp3.1\RepositoryLayer.AssemblyInfoInputs.cache
+C:\Users\prabhakar\source\repos\FundooApp\RepositoryLayer\obj\Debug\netcoreapp3.1\RepositoryLayer.AssemblyInfo.cs
+C:\Users\prabhakar\source\repos\FundooApp\RepositoryLayer\obj\Debug\netcoreapp3.1\RepositoryLayer.csproj.CoreCompileInputs.cache
+C:\Users\prabhakar\source\repos\FundooApp\RepositoryLayer\obj\Debug\netcoreapp3.1\RepositoryLayer.dll
+C:\Users\prabhakar\source\repos\FundooApp\RepositoryLayer\obj\Debug\netcoreapp3.1\RepositoryLayer.pdb
