@@ -22,9 +22,15 @@ namespace FundooApp.Controllers
         {
             try
             {
-                if (this.BL.Registration(user))
+                RegisterResponse respoData = this.BL.Registration(user);
+                if (respoData.EmailId == user.EmailId)
                 {
-                    return this.Ok(new { Success = true, message = "User register succesfully" });
+                  //  RegisterResponse respoData = new RegisterResponse();
+                  /*  foreach(RegisterResponse in respoData)
+                    {
+                        
+                    }*/
+                    return this.Ok(new { Success = true, message = "User register succesfully", data = respoData});
                 }
                 else
                 {

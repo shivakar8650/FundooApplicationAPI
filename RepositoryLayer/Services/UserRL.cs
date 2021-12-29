@@ -19,7 +19,7 @@ namespace RepositoryLayer.Services
             this.context = context;
         }
 
-        public bool Registration(UserRegistration user)
+        public RegisterResponse Registration(UserRegistration user)
         {
             try
             {
@@ -39,12 +39,19 @@ namespace RepositoryLayer.Services
                 int result = this.context.SaveChanges();
                 if (result > 0)
                 {
-                    return true;
+                    RegisterResponse response = new RegisterResponse();
+                    response.FirstName = user.FirstName;
+                    response.LastName = user.LastName;
+                    response.EmailId = user.EmailId;
+                    response.Createdat = DateTime.Now;
+                 
+                    return response;
                 }
                 else
                 {
-                    return false;
+                    return default;
                 }
+               
             }
             catch (Exception ex)
             {
