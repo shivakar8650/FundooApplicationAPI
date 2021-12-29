@@ -26,7 +26,7 @@ namespace RepositoryLayer.Services
                 User newUser = new User();
                 newUser.FirstName = user.FirstName;
                 newUser.LastName = user.LastName;
-                newUser.Password = user.Password;
+                newUser.Password=encryptpass(user.Password);
                 newUser.EmailId = user.EmailId;
                 newUser.Createdat = DateTime.Now;
                 newUser.Modified = DateTime.Now;
@@ -64,9 +64,10 @@ namespace RepositoryLayer.Services
         {
             try
             {
-                User ValidLogin = this.context.UserTable.Where(X => X.EmailId == User1.EmailId && X.Password == User1.Password).FirstOrDefault();
-                if (ValidLogin.Id != 0 && ValidLogin.EmailId != null)
+                User ValidLogin = this.context.UserTable.Where(X => X.EmailId == User1.EmailId ).FirstOrDefault();
+                if (Decryptpass(ValidLogin.Password) == User1.Password)
                 {
+
                     UserResponse loginResponse = new UserResponse();
                     loginResponse.Id = ValidLogin.Id;
                     loginResponse.FirstName = ValidLogin.FirstName;
@@ -87,6 +88,26 @@ namespace RepositoryLayer.Services
             }
         }
 
+        public string encryptpass(string password)
+        {
+            string msg = "";
+            byte[] encode = new byte[password.Length];
+            encode = Encoding.UTF8.GetBytes(password);
+            msg = Convert.ToBase64String(encode);
+            return msg;
+        }
+        private string Decryptpass(string encryptpwd)
+        {
+            string decryptpwd = string.Empty;
+            UTF8Encoding encodepwd = new UTF8Encoding();
+            Decoder Decode = encodepwd.GetDecoder();
+            byte[] todecode_byte = Convert.FromBase64String(encryptpwd);
+            int charCount = Decode.GetCharCount(todecode_byte, 0, todecode_byte.Length);
+            char[] decoded_char = new char[charCount];
+            Decode.GetChars(todecode_byte, 0, todecode_byte.Length, decoded_char, 0);
+            decryptpwd = new String(decoded_char);
+            return decryptpwd;
+        }
 
     }
 }
