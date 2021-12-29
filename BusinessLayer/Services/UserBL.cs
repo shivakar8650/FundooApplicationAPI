@@ -27,5 +27,17 @@ namespace BusinessLayer.Services
             }
         }
 
+        public UserResponse GetLogin(UserLogin User1)   //to post emailid and password-login part
+        {
+            try
+            {
+                return this.UserRL.GetLogin(User1);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
     }
 }

@@ -4,6 +4,7 @@ using RepositoryLayer.Enitity;
 using RepositoryLayer.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace RepositoryLayer.Services
@@ -52,6 +53,33 @@ namespace RepositoryLayer.Services
 
         }
 
-        
+        public UserResponse GetLogin(UserLogin User1)  //to check login and password
+        {
+            try
+            {
+                User ValidLogin = this.context.UserTable.Where(X => X.EmailId == User1.EmailId && X.Password == User1.Password).FirstOrDefault();
+                if (ValidLogin.Id != 0 && ValidLogin.EmailId != null)
+                {
+                    UserResponse loginResponse = new UserResponse();
+                    loginResponse.Id = ValidLogin.Id;
+                    loginResponse.FirstName = ValidLogin.FirstName;
+                    loginResponse.LastName = ValidLogin.LastName;
+                    loginResponse.EmailId = ValidLogin.EmailId;
+                    loginResponse.Createdat = ValidLogin.Createdat;
+                    loginResponse.Modified = ValidLogin.Modified;
+                    return loginResponse;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+
     }
 }
