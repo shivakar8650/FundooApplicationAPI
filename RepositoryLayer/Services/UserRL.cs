@@ -1,4 +1,5 @@
 ﻿using CommonLayer.Model;
+using Microsoft.IdentityModel.Tokens;
 using RepositoryLayer.Context;
 using RepositoryLayer.Enitity;
 using RepositoryLayer.Interfaces;
@@ -6,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace RepositoryLayer.Services
 {
@@ -13,7 +16,7 @@ namespace RepositoryLayer.Services
     {
 
         readonly UserContext context;
-
+        private const string Secret = "fundooapplicationdone";
         public UserRL(UserContext context)
         {
             this.context = context;
@@ -67,14 +70,17 @@ namespace RepositoryLayer.Services
                 User ValidLogin = this.context.UserTable.Where(X => X.EmailId == User1.EmailId ).FirstOrDefault();
                 if (Decryptpass(ValidLogin.Password) == User1.Password)
                 {
-
+                    string token = "";
                     UserResponse loginResponse = new UserResponse();
+                    token = GenerateJWTToken(ValidLogin.EmailId);
                     loginResponse.Id = ValidLogin.Id;
                     loginResponse.FirstName = ValidLogin.FirstName;
                     loginResponse.LastName = ValidLogin.LastName;
                     loginResponse.EmailId = ValidLogin.EmailId;
                     loginResponse.Createdat = ValidLogin.Createdat;
                     loginResponse.Modified = ValidLogin.Modified;
+                    loginResponse.Token= token;
+
                     return loginResponse;
                 }
                 else
@@ -88,6 +94,19 @@ namespace RepositoryLayer.Services
             }
         }
 
+        private string GenerateJWTToken(string EmailId)
+        {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Secret));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            var claims = new[] {
+            new Claim("EmailId",EmailId)
+            };
+            var token = new JwtSecurityToken("Shivakar", EmailId,
+              claims,
+              expires: DateTime.Now.AddMinutes(20),
+              signingCredentials: credentials);
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
         public string encryptpass(string password)
         {
             string msg = "";

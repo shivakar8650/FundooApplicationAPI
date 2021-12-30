@@ -12,5 +12,6 @@ namespace CommonLayer.Model
         public string EmailId { get; set; }
         public DateTime? Createdat { get; set; }
         public DateTime? Modified { get; set; }
+        public string Token { get; set; }
     }
 }
