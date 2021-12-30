@@ -94,6 +94,11 @@ namespace RepositoryLayer.Services
             }
         }
 
+
+        public IEnumerable<User> GetUserRegistrations()
+        {
+            return context.UserTable.ToList();
+        }
         private string GenerateJWTToken(string EmailId)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Secret));

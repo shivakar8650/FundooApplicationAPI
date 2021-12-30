@@ -1,4 +1,5 @@
 ﻿using CommonLayer.Model;
+using RepositoryLayer.Enitity;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,6 +10,7 @@ namespace BusinessLayer.Interfaces
     {
         public RegisterResponse Registration(UserRegistration user);
 
+        IEnumerable<User> GetUserRegistrations();
         public UserResponse GetLogin(UserLogin User1);
     }
 }

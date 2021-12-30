@@ -43,6 +43,28 @@ namespace FundooApp.Controllers
             }
         }
 
+        [HttpGet("GetAllUserDetails")]              //get all registered data
+        public IActionResult GetAllUserDetails()
+        {
+            try
+            {
+                var userDetailsList = this.BL.GetUserRegistrations();
+                if (userDetailsList != null)
+                {
+                    return this.Ok(new { Success = true, userlist = userDetailsList });
+                }
+                else
+                {
+                    return this.BadRequest(new { Success = false, message = "No user records found" });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.BadRequest(new { success = false, message = ex.InnerException });
+            }
+        }
+
+
         [HttpPost("Login")]                             //post login Details
         public IActionResult GetLogin(UserLogin user1)
         {

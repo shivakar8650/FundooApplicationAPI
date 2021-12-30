@@ -1,8 +1,9 @@
 ﻿using BusinessLayer.Interfaces;
 using CommonLayer.Model;
+using RepositoryLayer.Enitity;
 using RepositoryLayer.Interfaces;
 using System;
-
+using System.Collections.Generic;
 
 namespace BusinessLayer.Services
 {
@@ -27,6 +28,10 @@ namespace BusinessLayer.Services
             }
         }
 
+        public IEnumerable<User> GetUserRegistrations()       //to get all registered data
+        {
+            return this.UserRL.GetUserRegistrations();
+        }
         public UserResponse GetLogin(UserLogin User1)   //to post emailid and password-login part
         {
             try
