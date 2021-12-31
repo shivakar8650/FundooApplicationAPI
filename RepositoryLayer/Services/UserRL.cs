@@ -72,7 +72,7 @@ namespace RepositoryLayer.Services
                 {
                     string token = "";
                     UserResponse loginResponse = new UserResponse();
-                    token = GenerateJWTToken(ValidLogin.EmailId);
+                    token = GenerateJWTToken(ValidLogin.EmailId, ValidLogin.Id);
                     loginResponse.Id = ValidLogin.Id;
                     loginResponse.FirstName = ValidLogin.FirstName;
                     loginResponse.LastName = ValidLogin.LastName;
@@ -99,12 +99,13 @@ namespace RepositoryLayer.Services
         {
             return context.UserTable.ToList();
         }
-        private string GenerateJWTToken(string EmailId)
+        private string GenerateJWTToken(string EmailId,long UserId)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Secret));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var claims = new[] {
-            new Claim("EmailId",EmailId)
+            new Claim(ClaimTypes.Email,EmailId),
+            new Claim("UserId",UserId.ToString())
             };
             var token = new JwtSecurityToken("Shivakar", EmailId,
               claims,
