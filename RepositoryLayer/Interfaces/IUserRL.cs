@@ -11,5 +11,6 @@ namespace RepositoryLayer.Interfaces
         public UserResponse GetLogin(UserLogin User1);
 
         IEnumerable<User> GetUserRegistrations();  //to get all registered data
+        bool SendResetLink(string email);
     }
 }

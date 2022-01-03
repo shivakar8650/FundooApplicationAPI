@@ -44,5 +44,16 @@ namespace BusinessLayer.Services
             }
         }
 
+        public bool SendResetLink(string email)
+        {
+            try
+            {
+                return this.UserRL.SendResetLink(email);
+            }
+            catch(Exception e)
+            {
+                throw e.InnerException;
+            }
+        }
     }
 }

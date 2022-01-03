@@ -1,4 +1,5 @@
 ﻿using CommonLayer.Model;
+
 using RepositoryLayer.Context;
 using RepositoryLayer.Enitity;
 using RepositoryLayer.Interfaces;
@@ -11,8 +12,7 @@ namespace RepositoryLayer.Services
 {
     public class NoteRL : INoteRL
     {
-        readonly UserContext context;
-
+        readonly UserContext context;  
         public NoteRL(UserContext context)
         {
             this.context = context;

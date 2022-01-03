@@ -1,4 +1,5 @@
 ﻿using CommonLayer.Model;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using RepositoryLayer.Context;
 using RepositoryLayer.Enitity;
@@ -9,17 +10,21 @@ using System.Linq;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Security.Cryptography;
 
 namespace RepositoryLayer.Services
 {
     public class UserRL : IUserRL
     {
-
+        private const string Key = "Thisismysecretkeyshivakar";
         readonly UserContext context;
-        private const string Secret = "fundooapplicationdone";
-        public UserRL(UserContext context)
+        private readonly IConfiguration _config;
+      
+        public UserRL(UserContext context, IConfiguration config)
         {
             this.context = context;
+            _config = config;
         }
 
         public RegisterResponse Registration(UserRegistration user)
@@ -72,7 +77,7 @@ namespace RepositoryLayer.Services
                 {
                     string token = "";
                     UserResponse loginResponse = new UserResponse();
-                    token = GenerateJWTToken(ValidLogin.EmailId, ValidLogin.Id);
+                    token = GenerateJWTToken(ValidLogin.EmailId,ValidLogin.Id);
                     loginResponse.Id = ValidLogin.Id;
                     loginResponse.FirstName = ValidLogin.FirstName;
                     loginResponse.LastName = ValidLogin.LastName;
@@ -99,20 +104,37 @@ namespace RepositoryLayer.Services
         {
             return context.UserTable.ToList();
         }
-        private string GenerateJWTToken(string EmailId,long UserId)
+
+
+        private string GenerateJWTToken(string EmailId, long UserId)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Secret));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var claims = new[] {
-            new Claim(ClaimTypes.Email,EmailId),
-            new Claim("UserId",UserId.ToString())
-            };
-            var token = new JwtSecurityToken("Shivakar", EmailId,
+           new Claim(ClaimTypes.Email,EmailId),
+           new Claim("UserId",UserId.ToString())
+           };
+            var token = new JwtSecurityToken(_config["Jwt:Issuer"], EmailId,
               claims,
               expires: DateTime.Now.AddMinutes(20),
               signingCredentials: credentials);
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+       /*     private string GenerateJWTToken(string EmailId)
+        {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(_config["Jwt:Issuer"],
+              _config["Jwt:Issuer"],
+              null,
+              expires: DateTime.Now.AddMinutes(20),
+              signingCredentials: credentials);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }*/
+
         public string encryptpass(string password)
         {
             string msg = "";
@@ -134,5 +156,23 @@ namespace RepositoryLayer.Services
             return decryptpwd;
         }
 
+        public bool SendResetLink(string email)
+        {
+            User ValidLogin = this.context.UserTable.Where(X => X.EmailId == email).FirstOrDefault();
+             if(ValidLogin!=null)
+            {
+                var token = GenerateJWTToken(ValidLogin.EmailId, ValidLogin.Id);
+
+                int OTP = Generate(100000, 999999);
+
+            }
+            return default;
+        }
+         private int Generate(int min ,int max)
+        {
+            Random rnd = new Random();
+            return rnd.Next(min, max);
+         
+        }
     }
 }

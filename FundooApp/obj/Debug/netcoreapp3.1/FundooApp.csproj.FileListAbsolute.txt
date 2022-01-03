@@ -74,3 +74,4 @@ C:\Users\prabhakar\source\repos\FundooApp\FundooApp\bin\Debug\netcoreapp3.1\Swas
 C:\Users\prabhakar\source\repos\FundooApp\FundooApp\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\prabhakar\source\repos\FundooApp\FundooApp\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
 C:\Users\prabhakar\source\repos\FundooApp\FundooApp\obj\Debug\netcoreapp3.1\FundooApp.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\prabhakar\source\repos\FundooApp\FundooApp\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll

@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Interfaces;
 using CommonLayer.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -19,6 +20,7 @@ namespace FundooApp.Controllers
         {
             this.noteBL = notesBL;
         }
+       [Authorize]
         [HttpPost]
         public IActionResult GenerateNote(UserNote notes)
         {
@@ -26,11 +28,11 @@ namespace FundooApp.Controllers
             {
                 if (this.noteBL.GenerateNote(notes))
                 {
-                    return this.Ok(new { Success = true, message = "New note created successfully " });
+                    return this.Ok(new { Success = true, message = "New Note created successfully " });
                 }
                 else
                 {
-                    return this.BadRequest(new { Success = false, message = "New node creation unsuccessful" });
+                    return this.BadRequest(new { Success = false, message = "New Node creation unsuccessful" });
                 }
 
             }
@@ -39,7 +41,7 @@ namespace FundooApp.Controllers
                 return this.BadRequest(new { Success = false, message = e.InnerException });
             }
         }
-
+        [Authorize]
         [HttpGet("getAllNotes")]
         public IActionResult GetAllNotes()
         {
@@ -57,7 +59,7 @@ namespace FundooApp.Controllers
                 return this.BadRequest(new { Success = false, message = e.InnerException });
             }
         }
-
+        [Authorize]
         [HttpPut("{id}")]
         public IActionResult UpdateNotes(UserNote notes)
         {
@@ -66,7 +68,7 @@ namespace FundooApp.Controllers
                 UserNote response = noteBL.UpdateNotes(notes);
                 if (response != null)
                 {
-                    return this.Ok(new { Success = true, message = " Registration Deleted" });
+                    return this.Ok(new { Success = true, message = " Registration Deleted",Updated=response});
                 }
                 else
                 {
@@ -80,6 +82,7 @@ namespace FundooApp.Controllers
         }
 
         [HttpDelete("Delete")]
+        
         public IActionResult DeleteNotes(long Id)
         {
             long ID = Id;
@@ -87,7 +90,7 @@ namespace FundooApp.Controllers
             {
                 if (this.noteBL.DeleteNotes( ID))
                 {
-                    return this.Ok(new { Success = true, message = " Registration Deleted" });
+                    return this.Ok(new { Success = true, message = "Deleted successfully.." });
                 }
                 else
                 {

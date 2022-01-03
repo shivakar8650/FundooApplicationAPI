@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "pmcCFBbIaE8BW8NWQqryDHysXkRjo63yrnxBVNHQHRa7UnBLRLGYvT8MDFOTxkto2XHnhPtHQVl4muwOoYp+fw==",
+  "dgSpecHash": "SDydTT417olj6CV7/OPBAfjJro49kkpYYymjHNDRWEejbBoZtFWusSj8btRCX4qma8R9nweJjlB4J/a9qTfVrg==",
   "success": true,
   "projectFilePath": "C:\\Users\\prabhakar\\source\\repos\\FundooApp\\FundooApp\\FundooApp.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\prabhakar\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\3.1.22\\microsoft.aspnetcore.authentication.jwtbearer.3.1.22.nupkg.sha512",
     "C:\\Users\\prabhakar\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\3.1.22\\microsoft.aspnetcore.jsonpatch.3.1.22.nupkg.sha512",
     "C:\\Users\\prabhakar\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\3.1.22\\microsoft.aspnetcore.mvc.newtonsoftjson.3.1.22.nupkg.sha512",
     "C:\\Users\\prabhakar\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",

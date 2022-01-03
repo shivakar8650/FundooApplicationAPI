@@ -32,6 +32,7 @@
       "FundooApp/1.0.0": {
         "dependencies": {
           "BusinessLayer": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.22",
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "3.1.22",
           "Microsoft.EntityFrameworkCore.Design": "3.1.22",
           "Swashbuckle.AspNetCore": "6.2.3",
@@ -310,6 +311,20 @@
         },
         "compile": {
           "FundooApp.dll": {}
+        }
+      },
+      "Microsoft.AspNetCore.Authentication.JwtBearer/3.1.22": {
+        "dependencies": {
+          "Microsoft.IdentityModel.Protocols.OpenIdConnect": "5.5.0"
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/Microsoft.AspNetCore.Authentication.JwtBearer.dll": {
+            "assemblyVersion": "3.1.22.0",
+            "fileVersion": "3.100.2221.57904"
+          }
+        },
+        "compile": {
+          "lib/netcoreapp3.1/Microsoft.AspNetCore.Authentication.JwtBearer.dll": {}
         }
       },
       "Microsoft.AspNetCore.JsonPatch/3.1.22": {
@@ -3075,6 +3090,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "Microsoft.AspNetCore.Authentication.JwtBearer/3.1.22": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-YiQJYVrJg4gvf1gnjXk1noWqROGG2kQ6eZg0v0KFoWswZH2fiWPLJ3iHom+m9D4bAZqRZnN/VOOMs3pORU5+FQ==",
+      "path": "microsoft.aspnetcore.authentication.jwtbearer/3.1.22",
+      "hashPath": "microsoft.aspnetcore.authentication.jwtbearer.3.1.22.nupkg.sha512"
     },
     "Microsoft.AspNetCore.JsonPatch/3.1.22": {
       "type": "package",
