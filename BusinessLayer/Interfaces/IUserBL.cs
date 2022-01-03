@@ -13,6 +13,7 @@ namespace BusinessLayer.Interfaces
         IEnumerable<User> GetUserRegistrations();
         public UserResponse GetLogin(UserLogin User1);
         bool SendResetLink(string email);
+        bool ResetPassword(ResetPassword reset,string email);
     }
 }
 

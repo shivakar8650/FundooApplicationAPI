@@ -20,7 +20,7 @@ namespace FundooApp.Controllers
         {
             this.noteBL = notesBL;
         }
-       [Authorize]
+        [Authorize]
         [HttpPost]
         public IActionResult GenerateNote(UserNote notes)
         {

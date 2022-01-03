@@ -55,5 +55,17 @@ namespace BusinessLayer.Services
                 throw e.InnerException;
             }
         }
+
+        public bool ResetPassword(ResetPassword reset , string email)
+        {
+            try
+            {
+                return this.UserRL.ResetPassword(reset,email);
+            }
+            catch (Exception e)
+            {
+                throw e.InnerException;
+            }
+        }
     }
 }

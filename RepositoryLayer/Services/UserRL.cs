@@ -12,6 +12,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Security.Cryptography;
+using Microsoft.AspNetCore.Http;
+using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace RepositoryLayer.Services
 {
@@ -20,7 +23,7 @@ namespace RepositoryLayer.Services
         private const string Key = "Thisismysecretkeyshivakar";
         readonly UserContext context;
         private readonly IConfiguration _config;
-      
+
         public UserRL(UserContext context, IConfiguration config)
         {
             this.context = context;
@@ -34,7 +37,7 @@ namespace RepositoryLayer.Services
                 User newUser = new User();
                 newUser.FirstName = user.FirstName;
                 newUser.LastName = user.LastName;
-                newUser.Password=encryptpass(user.Password);
+                newUser.Password = encryptpass(user.Password);
                 newUser.EmailId = user.EmailId;
                 newUser.Createdat = DateTime.Now;
                 newUser.Modified = DateTime.Now;
@@ -52,14 +55,14 @@ namespace RepositoryLayer.Services
                     response.LastName = user.LastName;
                     response.EmailId = user.EmailId;
                     response.Createdat = DateTime.Now;
-                 
+
                     return response;
                 }
                 else
                 {
                     return default;
                 }
-               
+
             }
             catch (Exception ex)
             {
@@ -72,19 +75,19 @@ namespace RepositoryLayer.Services
         {
             try
             {
-                User ValidLogin = this.context.UserTable.Where(X => X.EmailId == User1.EmailId ).FirstOrDefault();
+                User ValidLogin = this.context.UserTable.Where(X => X.EmailId == User1.EmailId).FirstOrDefault();
                 if (Decryptpass(ValidLogin.Password) == User1.Password)
                 {
                     string token = "";
                     UserResponse loginResponse = new UserResponse();
-                    token = GenerateJWTToken(ValidLogin.EmailId,ValidLogin.Id);
+                    token = GenerateJWTToken(ValidLogin.EmailId, ValidLogin.Id);
                     loginResponse.Id = ValidLogin.Id;
                     loginResponse.FirstName = ValidLogin.FirstName;
                     loginResponse.LastName = ValidLogin.LastName;
                     loginResponse.EmailId = ValidLogin.EmailId;
                     loginResponse.Createdat = ValidLogin.Createdat;
                     loginResponse.Modified = ValidLogin.Modified;
-                    loginResponse.Token= token;
+                    loginResponse.Token = token;
 
                     return loginResponse;
                 }
@@ -121,19 +124,19 @@ namespace RepositoryLayer.Services
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-       /*     private string GenerateJWTToken(string EmailId)
-        {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+        /*     private string GenerateJWTToken(string EmailId)
+         {
+             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var token = new JwtSecurityToken(_config["Jwt:Issuer"],
-              _config["Jwt:Issuer"],
-              null,
-              expires: DateTime.Now.AddMinutes(20),
-              signingCredentials: credentials);
+             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
+               _config["Jwt:Issuer"],
+               null,
+               expires: DateTime.Now.AddMinutes(20),
+               signingCredentials: credentials);
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }*/
+             return new JwtSecurityTokenHandler().WriteToken(token);
+         }*/
 
         public string encryptpass(string password)
         {
@@ -159,20 +162,35 @@ namespace RepositoryLayer.Services
         public bool SendResetLink(string email)
         {
             User ValidLogin = this.context.UserTable.Where(X => X.EmailId == email).FirstOrDefault();
-             if(ValidLogin!=null)
+            if (ValidLogin.EmailId != null)
             {
                 var token = GenerateJWTToken(ValidLogin.EmailId, ValidLogin.Id);
 
-                int OTP = Generate(100000, 999999);
+                new MsmqOperation().Sender(token);
+                return true;
+
+
 
             }
-            return default;
+            return false;
         }
-         private int Generate(int min ,int max)
+
+        public bool ResetPassword(ResetPassword reset, string email)
         {
-            Random rnd = new Random();
-            return rnd.Next(min, max);
-         
+
+            var ValidLogin = this.context.UserTable.SingleOrDefault(x => x.EmailId == email);
+            if (ValidLogin.EmailId != null)
+            {
+                context.UserTable.Attach(ValidLogin); 
+                ValidLogin.Password = reset.ConfirmPassword; 
+                context.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
+    
 }

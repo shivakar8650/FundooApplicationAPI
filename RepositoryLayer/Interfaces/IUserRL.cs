@@ -12,5 +12,6 @@ namespace RepositoryLayer.Interfaces
 
         IEnumerable<User> GetUserRegistrations();  //to get all registered data
         bool SendResetLink(string email);
+        bool ResetPassword(ResetPassword reset,string email);
     }
 }
