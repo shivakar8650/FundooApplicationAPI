@@ -16,6 +16,32 @@ namespace BusinessLayer.Services
         {
             this.NoteRL = noteRL;
         }
+
+        public string ArchiveORUnarchiveNote(long noteid)
+        {
+            try
+            {
+                return this.NoteRL.ArchiveORUnarchiveNote(noteid);
+            }
+            catch (Exception e)
+            {
+                throw e.InnerException;
+            }
+
+        }
+
+        public string ColorNote(long noteId, string color)
+        {
+            try
+            {
+                return this.NoteRL.ColorNote(noteId, color);
+            }
+            catch (Exception e)
+            {
+                throw e.InnerException;
+            }
+        }
+
         public bool DeleteNotes(long Id)
         {
             try
@@ -24,16 +50,16 @@ namespace BusinessLayer.Services
             }
             catch (Exception e)
             {
-                throw;
+                throw e.InnerException;
             }
 
         }
 
-        public bool GenerateNote(UserNote notes)
+        public bool GenerateNote(UserNote notes,long UserId)
         {
             try
             {
-                return this.NoteRL.GenerateNote(notes);
+                return this.NoteRL.GenerateNote(notes, UserId);
             }
             catch (Exception e)
             {
@@ -47,15 +73,39 @@ namespace BusinessLayer.Services
           
         }
 
-        public UserNote UpdateNotes(UserNote notes)
+        public string PinORUnPinNote(long noteid)
         {
             try
             {
-                return this.NoteRL.UpdateNotes(notes);
+                return this.NoteRL.PinORUnPinNote( noteid);
             }
             catch (Exception e)
             {
-                throw;
+                throw e.InnerException;
+            }
+        }
+
+        public string TrashOrRestoreNote(long noteid)
+        {
+            try
+            {
+                return this.NoteRL.TrashOrRestoreNote(noteid);
+            }
+            catch (Exception e)
+            {
+                throw e.InnerException;
+            }
+        }
+
+        public UserNote UpdateNotes(UserNote notes, long UserId, long Noteid)
+        {
+            try
+            {
+                return this.NoteRL.UpdateNotes(notes,UserId,Noteid);
+            }
+            catch (Exception e)
+            {
+                throw e.InnerException;
             }
         }
     }

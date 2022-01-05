@@ -10,11 +10,7 @@ using System.Linq;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Security.Cryptography;
-using Microsoft.AspNetCore.Http;
-using System.Data.Entity;
-using Microsoft.EntityFrameworkCore;
+
 
 namespace RepositoryLayer.Services
 {
@@ -71,7 +67,7 @@ namespace RepositoryLayer.Services
 
         }
 
-        public UserResponse GetLogin(UserLogin User1)  //to check login and password
+        public UserResponse GetLogin(UserLogin User1 )  //to check login and password
         {
             try
             {

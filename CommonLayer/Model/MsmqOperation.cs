@@ -48,18 +48,18 @@ namespace CommonLayer.Model
 
             // mail sending code smtp 
             string mailReceiver = GetEmailFromToken(token).ToString();
-            MailMessage message = new MailMessage("mayuritesting0123@gmail.com", mailReceiver);
-            string bodymessage = "for reset click here <a href='https://localhost:44361/api/user/GetAllUserDetails'> click me</a>" +
-                "copy the token Provided here : " + token;
+            MailMessage message = new MailMessage("shivakar.sb1660@gmail.com", mailReceiver);
+            string bodymessage = "for reset click here  <a href='https://localhost:44361/api/user/GetAllUserDetails'> click me</a>" +
+                "   copy the token Provided here : " + token;
            
            
             message.Subject = "Sending Email Using Asp.Net & C#";
             message.Body = bodymessage;
             message.BodyEncoding = Encoding.UTF8;
             message.IsBodyHtml = true;
-            SmtpClient client = new SmtpClient("smtp.gmail.com", 587); //Gmail smtp    
+            SmtpClient client = new SmtpClient("smtp.gmail.com", 587);  
             System.Net.NetworkCredential basicCredential1 = new
-            System.Net.NetworkCredential("mayuritesting0123@gmail.com", "testing@95");
+            System.Net.NetworkCredential("shivakar.sb1660@gmail.com", "8859869160");
             client.EnableSsl = true;
             client.UseDefaultCredentials = false;
             client.Credentials = basicCredential1;
@@ -72,16 +72,7 @@ namespace CommonLayer.Model
             {
                 throw ex;
             }
-          /*  var smtpClient = new SmtpClient("smtp.gmail.com")
-            {
-                Port = 587,
-                Credentials = new NetworkCredential("mayuritesting0123@gmail.com", "testing@95"),
-                EnableSsl = true,
-            };
-
-            smtpClient.Send("mayuritesting0123@gmail.com", "shivakar.up99@gmail.com", Subject, token);
-*/
-            // msmq receiver
+        
             msmq.BeginReceive();
         }
         public static string GetEmailFromToken(string token)

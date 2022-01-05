@@ -18,10 +18,10 @@ namespace RepositoryLayer.Services
             this.context = context;
         }
 
-       public bool GenerateNote(UserNote notes )
+       public bool GenerateNote(UserNote notes,long UserId)
         {
             try
-            {
+            {    
                 Note newNotes = new Note();
                 newNotes.Title = notes.Title;
                 newNotes.Message = notes.Message;
@@ -31,7 +31,7 @@ namespace RepositoryLayer.Services
                 newNotes.IsArchive = notes.IsArchive;
                 newNotes.IsPin = notes.IsPin;
                 newNotes.IsTrash = notes.IsTrash;
-                newNotes.Id = notes.Id;
+                newNotes.Id = UserId;
                 newNotes.Createat = notes.Createat;
                 //Adding the data to database
                 this.context.NoteTable.Add(newNotes);
@@ -57,11 +57,12 @@ namespace RepositoryLayer.Services
             return context.NoteTable.ToList();
         }
 
-        public UserNote UpdateNotes(UserNote notes)
+        public UserNote UpdateNotes(UserNote notes,long  UserId, long Noteid)
         {
-          
-                var UpdateNote = this.context.NoteTable.Where(Y => Y.Id == notes.Id).FirstOrDefault();
-                if (UpdateNote != null)
+            try
+            {
+                var UpdateNote = this.context.NoteTable.Where(Y => Y.NoteId == Noteid).FirstOrDefault();
+                if (UpdateNote != null && UpdateNote.Id == UserId)
                 {
                     UpdateNote.Title = notes.Title;
                     UpdateNote.Message = notes.Message;
@@ -72,17 +73,22 @@ namespace RepositoryLayer.Services
                     UpdateNote.IsPin = notes.IsPin;
                     UpdateNote.IsTrash = notes.IsTrash;
                     UpdateNote.Createat = notes.Createat;
-                   
-                   
+
+
                 }
-            var result = this.context.SaveChanges();
-            if (result > 0)
-            {
-                return notes;
+                var result = this.context.SaveChanges();
+                if (result > 0)
+                {
+                    return notes;
+                }
+                else
+                {
+                    return default;
+                }
             }
-            else
+            catch(Exception e)
             {
-                return default;
+                throw e.InnerException;
             }
 
 
@@ -91,7 +97,7 @@ namespace RepositoryLayer.Services
         {
             try
             {
-                var ValidNote = this.context.NoteTable.Where(Y => Y.Id == id).FirstOrDefault();
+                var ValidNote = this.context.NoteTable.Where(Y => Y.NoteId == id).FirstOrDefault();
               
                 //Deleting user details from the database user table
                 this.context.NoteTable.Remove(ValidNote);
@@ -108,10 +114,107 @@ namespace RepositoryLayer.Services
             }
             catch (Exception e)
             {
-                throw;
+                throw e.InnerException;
             }
         }
 
+        public string PinORUnPinNote(long noteid)
+        {
+            try
+            {
+                var Note = this.context.NoteTable.FirstOrDefault(x => x.NoteId == noteid);
+                if (Note.IsPin == true)
+                {
+                    Note.IsPin = false;
+                    this.context.SaveChanges();
+                    return "Note is UnPinned";
+                }
+                else
+                {
+                    Note.IsPin = true;
+                    this.context.SaveChanges();
+                    return "Note is Pinned";
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                throw ex.InnerException;
+            }
+        }
+
+        public string ArchiveORUnarchiveNote(long noteid)
+        {
+            try
+            {
+                var Note = this.context.NoteTable.FirstOrDefault(x => x.NoteId == noteid);
+                if (Note.IsArchive == true)
+                {
+                    Note.IsArchive = false;
+                    this.context.SaveChanges();
+                    return "Note Unarchived";
+                }
+                else
+                {
+                    Note.IsArchive = true;
+                    this.context.SaveChanges();
+                    return "Note Archived";
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public string TrashOrRestoreNote(long noteid)
+        {
+            try
+            {
+                var Note = this.context.NoteTable.FirstOrDefault(x => x.NoteId == noteid);
+                if (Note.IsTrash == true)
+                {
+                    Note.IsTrash = false;
+                    this.context.SaveChanges();
+                    return "Note is Restored.";
+                }
+                else
+                {
+                    Note.IsTrash = true;
+                    this.context.SaveChanges();
+                    return "Note is Trash";
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+        }
+
+        public string ColorNote(long noteId, string color)
+        {
+            try
+            {
+                var Note = this.context.NoteTable.FirstOrDefault(x => x.NoteId == noteId);
+                if (Note.Color != color)
+                {
+                    Note.Color = color;
+                    this.context.SaveChanges();
+                    return "Note color is changed.";
+                }
+                else
+                {
+                    Note.IsTrash = true;
+                    this.context.SaveChanges();
+                    return "choose different color";
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
+    
 }
     

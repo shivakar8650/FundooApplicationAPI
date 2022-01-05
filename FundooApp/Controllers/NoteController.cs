@@ -24,9 +24,11 @@ namespace FundooApp.Controllers
         [HttpPost]
         public IActionResult GenerateNote(UserNote notes)
         {
+            long UserId = Convert.ToInt64(User.FindFirst("UserId").Value);
+
             try
             {
-                if (this.noteBL.GenerateNote(notes))
+                if (this.noteBL.GenerateNote(notes, UserId))
                 {
                     return this.Ok(new { Success = true, message = "New Note created successfully " });
                 }
@@ -47,7 +49,7 @@ namespace FundooApp.Controllers
         {
             try
             {
-                var noteResult= this.noteBL.GetAllNotes();
+                var noteResult = this.noteBL.GetAllNotes();
                 if (noteResult == null)
                 {
                     return this.BadRequest(new { Success = false, message = " Notes records not found" });
@@ -60,15 +62,16 @@ namespace FundooApp.Controllers
             }
         }
         [Authorize]
-        [HttpPut("{id}")]
-        public IActionResult UpdateNotes(UserNote notes)
+        [HttpPut("Update{Noteid}")]
+        public IActionResult UpdateNotes(UserNote notes, long Noteid)
         {
+            long UserId = Convert.ToInt64(User.FindFirst("UserId").Value);
             try
             {
-                UserNote response = noteBL.UpdateNotes(notes);
+                UserNote response = noteBL.UpdateNotes(notes, UserId, Noteid);
                 if (response != null)
                 {
-                    return this.Ok(new { Success = true, message = " Registration Deleted",Updated=response});
+                    return this.Ok(new { Success = true, message = " Registration Deleted", Updated = response });
                 }
                 else
                 {
@@ -82,13 +85,13 @@ namespace FundooApp.Controllers
         }
 
         [HttpDelete("Delete")]
-        
-        public IActionResult DeleteNotes(long Id)
+
+        public IActionResult DeleteNotes(long NotesId)
         {
-            long ID = Id;
+
             try
             {
-                if (this.noteBL.DeleteNotes( ID))
+                if (this.noteBL.DeleteNotes(NotesId))
                 {
                     return this.Ok(new { Success = true, message = "Deleted successfully.." });
                 }
@@ -100,6 +103,86 @@ namespace FundooApp.Controllers
             catch (Exception e)
             {
                 return this.BadRequest(new { success = false, message = e.InnerException });
+            }
+        }
+
+        [HttpPut]
+        [Route("PinNote")]
+        public IActionResult PinORUnPinNote(long Noteid)
+        {
+            try
+            {
+                var result = this.noteBL.PinORUnPinNote(Noteid);
+                if (result != null)
+                {
+                    return this.Ok(new { Status = true, Message = result });
+                }
+
+                return this.BadRequest(new { Status = false, Message = result });
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new { Status = false, Message = ex.Message });
+            }
+        }
+
+        [HttpPut]
+        [Route("ArchiveNote")]
+        public IActionResult ArchiveORUnarchiveNote(long Noteid)
+        {
+            try
+            {
+                var result = this.noteBL.ArchiveORUnarchiveNote(Noteid);
+                if (result != null)
+                {
+                    return this.Ok(new { Status = true, Message = result });
+                }
+
+                return this.BadRequest(new { Status = false, Message = result });
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new { Status = false, Message = ex.Message });
+            }
+        }
+
+        [HttpPut]
+        [Route("TrashOrRestoreNote")]
+        public IActionResult TrashOrRestoreNote(long Noteid)
+        {
+            try
+            {
+                var result = this.noteBL.TrashOrRestoreNote(Noteid);
+                if (result != null)
+                {
+                    return this.Ok(new { Status = true, Message = result});
+                }
+
+                return this.BadRequest(new { Status = false, Message = result });
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new { Status = false, Message = ex.Message });
+            }
+        }
+
+        [HttpPut]
+        [Route("addColor")]
+        public IActionResult ChangeColor(long NoteId, string color)
+        {
+            try
+            {
+                var message = this.noteBL.ColorNote(NoteId, color);
+                if (message.Equals("New Color has set to this note !"))
+                {
+                    return this.Ok(new { Status = true, Message = message});
+                }
+
+                return this.BadRequest(new { Status = true, Message = message });
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new { Status = false, Message = ex.Message });
             }
         }
     }

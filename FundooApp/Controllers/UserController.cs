@@ -29,11 +29,7 @@ namespace FundooApp.Controllers
                 RegisterResponse respoData = this.BL.Registration(user);
                 if (respoData.EmailId == user.EmailId)
                 {
-                  //  RegisterResponse respoData = new RegisterResponse();
-                  /*  foreach(RegisterResponse in respoData)
-                    {
-                        
-                    }*/
+                  
                     return this.Ok(new { Success = true, message = "User register succesfully", data = respoData});
                 }
                 else
@@ -47,7 +43,8 @@ namespace FundooApp.Controllers
             }
         }
 
-        [Authorize]
+     /*   [Authorize]*/
+        [AllowAnonymous ]
    
         [HttpGet("GetAllUserDetails")]              //get all registered data
         public IActionResult GetAllUserDetails()
@@ -118,7 +115,7 @@ namespace FundooApp.Controllers
         }
         [Authorize]
         [HttpPost]
-        [Route("resetPassword/")]
+        [Route("resetPassword")]
         public IActionResult ResetPassword(ResetPassword reset)
         {
             var email = User.FindFirst(ClaimTypes.Email).Value.ToString();
