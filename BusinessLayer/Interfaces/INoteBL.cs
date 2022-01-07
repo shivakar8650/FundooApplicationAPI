@@ -16,5 +16,6 @@ namespace BusinessLayer.Interfaces
         string ArchiveORUnarchiveNote(long noteid);
         string TrashOrRestoreNote(long noteid);
         string ColorNote(long noteId, string color);
+        IEnumerable<Note> GetAllNotesOfUser(long UserId);
     }
 }

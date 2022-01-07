@@ -16,5 +16,6 @@ namespace RepositoryLayer.Interfaces
         string TrashOrRestoreNote(long noteid);
         string ColorNote(long noteId, string color);
         string ArchiveORUnarchiveNote(long noteid);
+        IEnumerable<Note> GetAllNotesOfUser(long UserId);
     }
 }

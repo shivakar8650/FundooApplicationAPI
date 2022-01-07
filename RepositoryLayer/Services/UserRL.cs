@@ -16,7 +16,7 @@ namespace RepositoryLayer.Services
 {
     public class UserRL : IUserRL
     {
-        private const string Key = "Thisismysecretkeyshivakar";
+       // private const string Key = "Thisismysecretkeyshivakar";
         readonly UserContext context;
         private readonly IConfiguration _config;
 
@@ -178,7 +178,7 @@ namespace RepositoryLayer.Services
             if (ValidLogin.EmailId != null)
             {
                 context.UserTable.Attach(ValidLogin); 
-                ValidLogin.Password = reset.ConfirmPassword; 
+                ValidLogin.Password = encryptpass(reset.ConfirmPassword); 
                 context.SaveChanges();
                 return true;
             }

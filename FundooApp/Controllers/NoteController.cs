@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace FundooApp.Controllers
@@ -50,6 +51,25 @@ namespace FundooApp.Controllers
             try
             {
                 var noteResult = this.noteBL.GetAllNotes();
+                if (noteResult == null)
+                {
+                    return this.BadRequest(new { Success = false, message = " Notes records not found" });
+                }
+                return this.Ok(new { Success = true, message = "Notes records found", notesdata = noteResult });
+            }
+            catch (Exception e)
+            {
+                return this.BadRequest(new { Success = false, message = e.InnerException });
+            }
+        }
+        [Authorize]
+        [HttpGet("getAllNotesOfUser")]
+        public IActionResult GetAllNotesofUSer()
+        {
+            long UserId = Convert.ToInt64(User.FindFirst("UserId").Value);
+            try
+            {
+                var noteResult = this.noteBL.GetAllNotesOfUser( UserId);
                 if (noteResult == null)
                 {
                     return this.BadRequest(new { Success = false, message = " Notes records not found" });
@@ -185,6 +205,27 @@ namespace FundooApp.Controllers
                 return this.NotFound(new { Status = false, Message = ex.Message });
             }
         }
+      
+
+        /*  [HttpPut]
+          [Route("AddImage")]
+          public IActionResult ChangeImage( string  Image)
+          {
+              try
+              {
+                  var message = this.noteBL.ChangeImageNote(Image);
+                  if (message.Equals("New Color has set to this note !"))
+                  {
+                      return this.Ok(new { Status = true, Message = message });
+                  }
+
+                  return this.BadRequest(new { Status = true, Message = message });
+              }
+              catch (Exception ex)
+              {
+                  return this.NotFound(new { Status = false, Message = ex.Message });
+              }*/
+
     }
 }
     

@@ -42,6 +42,8 @@ namespace FundooApp
             services.AddTransient<IUserRL, UserRL>();
             services.AddTransient<INoteBL, NoteBL>();
             services.AddTransient<INoteRL, NoteRL>();
+            services.AddTransient<ICollaboratorBL, CollaboratorBL>();
+            services.AddTransient<ICollaboratorRL, CollaboratorRL>();
             services.AddControllers().AddNewtonsoftJson(); ;
             services.AddDbContext<UserContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:UserDB"]));
 
@@ -112,11 +114,7 @@ namespace FundooApp
             {
                 endpoints.MapControllers();
             });
-          
-          /*  app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FundooApp"));
-*/
-
+         
         }
     }
 }

@@ -21,6 +21,11 @@ namespace RepositoryLayer.Context
         {
             get; set;
         }
+
+        public DbSet<collaborator> collaborationTable
+        {
+            get; set;
+        }
     }
 
 }

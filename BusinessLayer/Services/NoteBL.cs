@@ -30,6 +30,18 @@ namespace BusinessLayer.Services
 
         }
 
+       /* public string ChangeImageNote(string image)
+        {
+            try
+            {
+                return this.NoteRL.ChangeImageNote(image);
+            }
+            catch (Exception e)
+            {
+                throw e.InnerException;
+            }
+        }*/
+
         public string ColorNote(long noteId, string color)
         {
             try
@@ -63,7 +75,7 @@ namespace BusinessLayer.Services
             }
             catch (Exception e)
             {
-                throw;
+                throw e.InnerException;
             }
         }
 
@@ -71,6 +83,11 @@ namespace BusinessLayer.Services
         {
             return this.NoteRL.GetAllNotes();
           
+        }
+
+        public IEnumerable<Note> GetAllNotesOfUser(long UserId)
+        {
+            return this.NoteRL.GetAllNotesOfUser(UserId);
         }
 
         public string PinORUnPinNote(long noteid)

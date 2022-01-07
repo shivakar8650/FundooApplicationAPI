@@ -48,7 +48,7 @@ namespace RepositoryLayer.Services
             }
             catch (Exception e)
             {
-                throw;
+                throw e.InnerException;
             }
         }
 
@@ -213,6 +213,11 @@ namespace RepositoryLayer.Services
             {
                 throw new Exception(ex.Message);
             }
+        }
+
+        public IEnumerable<Note> GetAllNotesOfUser(long UserId)
+        {
+            return context.NoteTable.Where(Y => Y.Id == UserId).ToList();
         }
     }
     
