@@ -6,21 +6,20 @@ using System.Text;
 
 namespace RepositoryLayer.Enitity
 {
-    public class collaborator
+    public class Label
     {
+        
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public long labelID { get; set; }
 
-        public long collabId { get; set; }
-        public virtual Note Note { get; set; }
-   
-        public long NoteId { get; set; }
+        public string labelName { get; set; }
+        public long? NoteId { get; set; }
         public virtual User User { get; set; }
         [ForeignKey("User")]
         public long UserId { get; set; }
-        public string EmailId { get; set; }
 
-     
+
+        public ICollection<Note> Note { get; set; }
     }
 }
-/*EntityFramework\Add - Migration*/

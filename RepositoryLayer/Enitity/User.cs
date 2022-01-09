@@ -20,5 +20,6 @@ namespace RepositoryLayer.Enitity
         public DateTime? Modified { get; set; }
 
         public ICollection<Note> Note { get; set; }
+        public ICollection<collaborator> collaborator { get; set; }
     }
 }

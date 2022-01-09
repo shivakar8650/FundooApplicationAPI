@@ -17,7 +17,12 @@ namespace RepositoryLayer.Services
             this.context = context;
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="collaborate"></param>
+        /// <param name="UserId"></param>
+        /// <returns></returns>
         // note creator collaborate other problem if 2nd user collaborate 3rd user(problem)
         public bool NoteCollaborate(NoteCollaborate collaborate, long UserId)
         {
@@ -30,7 +35,8 @@ namespace RepositoryLayer.Services
                 {
                     Newcollaborate.NoteId = collaborate.NoteId;
                     Newcollaborate.EmailId = collaborate.EmailId;
-                    this.context.collaborationTable.Add(Newcollaborate);
+                    Newcollaborate.UserId = UserId;
+                    this.context.collabTable.Add(Newcollaborate);
                 }
                 int result = this.context.SaveChanges();
                 if (result > 0)
@@ -56,9 +62,9 @@ namespace RepositoryLayer.Services
                 var Usertake = this.context.UserTable.FirstOrDefault(x => x.EmailId == collaborate.EmailId);
                 if (note != null && Usertake.EmailId != null)
                 {
-                    collaborator UserRemoved = this.context.collaborationTable.FirstOrDefault(x => x.EmailId == collaborate.EmailId && x.NoteId == collaborate.NoteId);
+                    collaborator UserRemoved = this.context.collabTable.FirstOrDefault(x => x.EmailId == collaborate.EmailId && x.NoteId == collaborate.NoteId);
                     if(UserRemoved !=null)
-                    this.context.collaborationTable.Remove(UserRemoved);
+                    this.context.collabTable.Remove(UserRemoved);
 
                     int result = this.context.SaveChanges();
                     if (result > 0)
@@ -72,12 +78,12 @@ namespace RepositoryLayer.Services
                 }
                 else
                 {
-                    return "This is user not exist or you have no permission to Collaborate" ;
+                    return "Either this User not exist or you have no permission to Collaborate this Note" ;
                 }
             }
             catch (Exception ex)
             {
-                throw ex.InnerException;
+                throw;
             }
 
         }

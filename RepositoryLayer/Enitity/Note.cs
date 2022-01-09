@@ -21,7 +21,6 @@ namespace RepositoryLayer.Enitity
         public DateTime Remainder { get; set; }
         public string Color { get; set; }
         public string Image { get; set; }
-
         public bool IsArchive { get; set; }
         public bool IsPin { get; set; }
         public bool IsTrash { get; set; }
@@ -31,6 +30,7 @@ namespace RepositoryLayer.Enitity
 
         [DataType(DataType.DateTime)]
         public DateTime? Modifiedat { get; set; }
+        public ICollection<collaborator> collaborator { get; set; }
 
     }
 }

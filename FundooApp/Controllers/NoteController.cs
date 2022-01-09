@@ -82,7 +82,7 @@ namespace FundooApp.Controllers
             }
         }
         [Authorize]
-        [HttpPut("Update{Noteid}")]
+        [HttpPut("{Noteid}")]
         public IActionResult UpdateNotes(UserNote notes, long Noteid)
         {
             long UserId = Convert.ToInt64(User.FindFirst("UserId").Value);
@@ -103,8 +103,8 @@ namespace FundooApp.Controllers
                 return this.BadRequest(new { success = false, message = e.InnerException });
             }
         }
-
-        [HttpDelete("Delete")]
+   
+        [HttpDelete]
 
         public IActionResult DeleteNotes(long NotesId)
         {

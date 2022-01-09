@@ -12,6 +12,21 @@ namespace RepositoryLayer.Context
         {
 
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<collaborator>()
+                .HasOne(n => n.Note)
+                .WithMany(u => u.collaborator)
+                .HasForeignKey(ni => ni.NoteId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<collaborator>()
+              .HasOne(u => u.User)
+              .WithMany(u => u.collaborator)
+              .HasForeignKey(ui => ui.UserId)
+              .OnDelete(DeleteBehavior.Restrict);
+        }
+
         public DbSet<User> UserTable
         {
             get; set;
@@ -22,7 +37,12 @@ namespace RepositoryLayer.Context
             get; set;
         }
 
-        public DbSet<collaborator> collaborationTable
+        public DbSet<collaborator> collabTable
+        {
+            get; set;
+        }
+
+        public DbSet<Label> LabelsTable
         {
             get; set;
         }

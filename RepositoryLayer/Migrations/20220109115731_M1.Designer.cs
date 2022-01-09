@@ -10,8 +10,8 @@ using RepositoryLayer.Context;
 namespace RepositoryLayer.Migrations
 {
     [DbContext(typeof(UserContext))]
-    [Migration("20220106092943_M3")]
-    partial class M3
+    [Migration("20220109115731_M1")]
+    partial class M1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -100,7 +100,7 @@ namespace RepositoryLayer.Migrations
 
             modelBuilder.Entity("RepositoryLayer.Enitity.collaborator", b =>
                 {
-                    b.Property<long>("collaboratorId")
+                    b.Property<long>("collabId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -111,16 +111,16 @@ namespace RepositoryLayer.Migrations
                     b.Property<long>("NoteId")
                         .HasColumnType("bigint");
 
-                    b.Property<long?>("UserId")
+                    b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
-                    b.HasKey("collaboratorId");
+                    b.HasKey("collabId");
 
                     b.HasIndex("NoteId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("collaborationTable");
+                    b.ToTable("collabTable");
                 });
 
             modelBuilder.Entity("RepositoryLayer.Enitity.Note", b =>
@@ -135,14 +135,16 @@ namespace RepositoryLayer.Migrations
             modelBuilder.Entity("RepositoryLayer.Enitity.collaborator", b =>
                 {
                     b.HasOne("RepositoryLayer.Enitity.Note", "Note")
-                        .WithMany()
+                        .WithMany("collaborator")
                         .HasForeignKey("NoteId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("RepositoryLayer.Enitity.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                        .WithMany("collaborator")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
