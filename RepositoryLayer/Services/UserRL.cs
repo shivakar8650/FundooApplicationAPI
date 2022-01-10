@@ -16,7 +16,7 @@ namespace RepositoryLayer.Services
 {
     public class UserRL : IUserRL
     {
-       // private const string Key = "Thisismysecretkeyshivakar";
+     
         readonly UserContext context;
         private readonly IConfiguration _config;
 
@@ -26,6 +26,11 @@ namespace RepositoryLayer.Services
             _config = config;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public RegisterResponse Registration(UserRegistration user)
         {
             try

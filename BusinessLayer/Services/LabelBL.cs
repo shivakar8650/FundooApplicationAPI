@@ -16,6 +16,19 @@ namespace BusinessLayer.Services
         {
             this.LabelRL = LabelRL;
         }
+
+        public bool AddNoteToExistingLabel(string labelName, long noteId, long userId)
+        {
+            try
+            {
+                return this.LabelRL.AddNoteToExistingLabel(labelName,noteId, userId);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
         public bool CreateLabel(LabelClass labelInput, long UserId)
         {
             try
@@ -26,6 +39,31 @@ namespace BusinessLayer.Services
             {
                 throw ;
             }
+        }
+
+        public bool DeleteLabel(string labelName)
+        {
+
+            try
+            {
+                return this.LabelRL.DeleteLabel(labelName);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
+        public bool RemoveNoteFromLabel(string labelName, long noteId)
+        { 
+            try
+            {
+                return this.LabelRL.RemoveNoteFromLabel(labelName,noteId);
+            }
+            catch (Exception e)
+            {
+                throw;
+            } 
         }
     }
 }

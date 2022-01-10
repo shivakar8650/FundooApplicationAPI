@@ -14,6 +14,7 @@ namespace RepositoryLayer.Enitity
         public long labelID { get; set; }
 
         public string labelName { get; set; }
+ 
         public long? NoteId { get; set; }
         public virtual User User { get; set; }
         [ForeignKey("User")]

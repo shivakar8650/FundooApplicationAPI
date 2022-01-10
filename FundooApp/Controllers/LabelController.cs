@@ -29,10 +29,10 @@ namespace FundooApp.Controllers
             try
             {
                 long UserId = Convert.ToInt64(User.FindFirst("UserId").Value);
-              
+
                 if (this.LabelBL.CreateLabel(labelInput, UserId))
                 {
-                    return Ok(new { Success = true, message = "Label added Successfully !!" });
+                    return Ok(new { Success = true, message = "Label created Successfully !!" });
                 }
                 else
                 {
@@ -41,23 +41,20 @@ namespace FundooApp.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(new { Success = false, message = e.Message, stackTrace = e.StackTrace });
+                return this.BadRequest(new { success = false, message = e.InnerException });
             }
         }
-
-        /*[HttpPost]
-        [Route("{noteId}/{labelName}")]
-        public IActionResult AddNoteToExistingLabel(long noteId, string labelName)
+        [Authorize]
+        [HttpPut]
+        [Route("AddNote")]
+        public IActionResult AddNoteToLabel(string LabelName,long noteId)
         {
             try
             {
-                LabelModel labelModel = new LabelModel();
-                long userId = GetTokenId();
-                bool result = _labelBL.AddNoteToExistingLabel(noteId, userId, labelName);
-
-                if (result == true)
+                long UserId = Convert.ToInt64(User.FindFirst("UserId").Value);
+                if (this.LabelBL.AddNoteToExistingLabel(LabelName, noteId, UserId))
                 {
-                    return Ok(new { Success = true, message = $"Note added to {labelName} Successfully !!" });
+                    return Ok(new { Success = true, message = $"Note added  Successfully to {LabelName} !!" });
                 }
                 else
                 {
@@ -66,161 +63,54 @@ namespace FundooApp.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(new { Success = false, message = e.Message, stackTrace = e.StackTrace });
+                return this.BadRequest(new { success = false, message = e.InnerException });
             }
         }
 
-        [HttpPost]
-        public IActionResult AddLabelToUser(LabelModel labelModel)
-        {
-            try
-            {
-                long userId = GetTokenId();
-                bool result = _labelBL.AddLabelToUser(userId, labelModel);
-
-                if (result == true)
-                {
-                    return Ok(new { Success = true, message = "Label added Successfully !!" });
-                }
-                else
-                {
-                    return BadRequest(new { Success = false, message = "Label already exists !!" });
-                }
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new { Success = false, message = e.Message, stackTrace = e.StackTrace });
-            }
-        }
-
-        [HttpGet]
-        [Route("{noteId}")]
-        public IActionResult GetNoteLables(long noteId)
-        {
-            try
-            {
-                long userId = GetTokenId();
-                var labelList = _labelBL.GetNoteLables(noteId, userId);
-
-                if (labelList.Count != 0)
-                {
-                    return this.Ok(new { Success = true, message = "These are Your all the Labels.", Data = labelList });
-                }
-                else if (labelList.Count == 0)
-                {
-                    return BadRequest(new { Success = false, message = "No Label is added to this note." });
-                }
-                else
-                {
-                    return BadRequest(new { Success = false, message = "Something went wrong." });
-                }
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new { Success = false, message = e.Message, stackTrace = e.StackTrace });
-            }
-        }
-
-        [HttpGet]
-        public IActionResult GetUserLabels()
-        {
-            try
-            {
-                long userId = GetTokenId();
-                List<Label> labelList = _labelBL.GetUserLabels(userId);
-
-                if (labelList.Count != 0)
-                {
-                    return this.Ok(new { Success = true, message = "These are Your all the Labels.", Data = labelList });
-                }
-                else if (labelList.Count == 0)
-                {
-                    return BadRequest(new { Success = false, message = "No Label is added." });
-                }
-                else
-                {
-                    return BadRequest(new { Success = false, message = "Something went wrong." });
-                }
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new { Success = false, message = e.Message, stackTrace = e.StackTrace });
-            }
-        }
-
-        [HttpPut]
-        [Route("{labelId}")]
-        public IActionResult EditLabelName(long labelId, LabelModel labelModel)
-        {
-            try
-            {
-                long userId = GetTokenId();
-                bool result = _labelBL.EditLabelName(labelId, userId, labelModel);
-
-                if (result == true)
-                {
-                    return Ok(new { Success = true, message = "Label changed Successfully !!" });
-                }
-                else
-                {
-                    return BadRequest(new { Success = false, message = "Label does not exists !!" });
-                }
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new { Success = false, message = e.Message, stackTrace = e.StackTrace });
-            }
-        }
-
+        [Authorize]
         [HttpDelete]
-        [Route("{labelId}/{noteId}")]
-        public IActionResult RemoveLabelFromNote(long labelId, long noteId)
+        public IActionResult DeleteLabel(string LabelName)
         {
             try
             {
-                long userId = GetTokenId();
-                bool result = _labelBL.RemoveLabel(labelId, noteId, userId);
-
-                if (result == true)
+            
+                if (this.LabelBL.DeleteLabel(LabelName))
                 {
-                    return Ok(new { Success = true, message = "Label Removed Successfully !!" });
+                    return Ok(new { Success = true, message = $" {LabelName} delete successfully!!" });
                 }
                 else
                 {
-                    return BadRequest(new { Success = false, message = "Failed to Remove label !!" });
+                    return BadRequest(new { Success = false, message = "deletion failed!!" });
                 }
             }
             catch (Exception e)
             {
-                return BadRequest(new { Success = false, message = e.Message, stackTrace = e.StackTrace });
+                return this.BadRequest(new { success = false, message = e.InnerException });
             }
         }
 
+        [Authorize]
         [HttpDelete]
-        public IActionResult DeleteLabel(LabelModel labelModel)
+        [Route("note")]
+        public IActionResult RemoveNoteFromLabel(string LabelName ,long NoteId)
         {
             try
             {
-                long userId = GetTokenId();
-                bool result = _labelBL.DeleteLabel(userId, labelModel.labelName);
 
-                if (result == true)
+                if (this.LabelBL.RemoveNoteFromLabel(LabelName,NoteId))
                 {
-                    return Ok(new { Success = true, message = "Label Removed Successfully !!" });
+                    return Ok(new { Success = true, message = $"Note {NoteId} is removed from {LabelName} successfully!!"});
                 }
                 else
                 {
-                    return BadRequest(new { Success = false, message = "Failed to Remove label !!" });
+                    return BadRequest(new { Success = false, message = "deletion failed!!" });
                 }
             }
             catch (Exception e)
             {
-                return BadRequest(new { Success = false, message = e.Message, stackTrace = e.StackTrace });
+                return this.BadRequest(new { success = false, message = e.InnerException });
             }
-        }*/
-
-
-
-
-    } }
+        }
+    }
+}
 

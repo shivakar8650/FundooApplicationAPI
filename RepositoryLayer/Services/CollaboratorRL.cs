@@ -50,10 +50,15 @@ namespace RepositoryLayer.Services
             }
             catch (Exception ex)
             {
-                throw ex.InnerException;
+                throw ;
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="collaborate"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public string RemoveCollaborate(NoteCollaborate collaborate, long userId)
         {
             try
