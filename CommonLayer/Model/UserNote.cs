@@ -6,7 +6,6 @@ namespace CommonLayer.Model
 {
     public class UserNote
     {
- 
         public string Title { get; set; }
         public string Message { get; set; }
         public DateTime Remainder { get; set; }
@@ -17,8 +16,6 @@ namespace CommonLayer.Model
         public bool IsTrash { get; set; } 
         public DateTime? Createat { get; set; }
         public DateTime? Modifiedat { get; set; }
-
-   
     }
 }
 

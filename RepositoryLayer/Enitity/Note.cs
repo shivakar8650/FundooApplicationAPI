@@ -10,10 +10,8 @@ namespace RepositoryLayer.Enitity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        
         public long NoteId { get; set; }
         public virtual User User { get; set; }
-       
         [ForeignKey("User")]
         public long Id { get; set; }
         public string Title { get; set; }

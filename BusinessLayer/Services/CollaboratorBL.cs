@@ -11,14 +11,11 @@ namespace BusinessLayer.Services
 {
     public class CollaboratorBL : ICollaboratorBL
     {
-
-
         ICollaboratorRL CollaboratorRL;
         public CollaboratorBL(ICollaboratorRL CollaboratorRL)
         {
             this.CollaboratorRL = CollaboratorRL;
         }
-
         public bool NoteCollaborate(NoteCollaborate collaborate, long UserId)
         {
             try
@@ -29,20 +26,17 @@ namespace BusinessLayer.Services
             {
                 throw e.InnerException;
             }
-
         }
-
-        public string RemoveCollaborate(NoteCollaborate collaborate, long userId)
+        public bool RemoveCollaborate(NoteCollaborate collaborate)
         {
             try
             {
-                return this.CollaboratorRL.RemoveCollaborate(collaborate, userId);
+                return this.CollaboratorRL.RemoveCollaborate(collaborate);
             }
             catch (Exception e)
             {
                 throw e.InnerException;
             }
-
         }
     }
 }

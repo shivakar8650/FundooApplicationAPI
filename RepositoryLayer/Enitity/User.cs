@@ -8,7 +8,6 @@ namespace RepositoryLayer.Enitity
 {
     public class User
     {
-
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id {  get; set; }
@@ -18,7 +17,6 @@ namespace RepositoryLayer.Enitity
         public string Password { get; set; }
         public DateTime? Createdat { get; set; }
         public DateTime? Modified { get; set; }
-
         public ICollection<Note> Note { get; set; }
         public ICollection<collaborator> collaborator { get; set; }
     }

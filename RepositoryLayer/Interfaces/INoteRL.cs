@@ -1,4 +1,5 @@
 ﻿using CommonLayer.Model;
+using Microsoft.AspNetCore.Http;
 using RepositoryLayer.Enitity;
 using System;
 using System.Collections.Generic;
@@ -17,5 +18,6 @@ namespace RepositoryLayer.Interfaces
         string ColorNote(long noteId, string color);
         string ArchiveORUnarchiveNote(long noteid);
         IEnumerable<Note> GetAllNotesOfUser(long UserId);
+        bool UploadImage(long noteId, IFormFile image);
     }
 }

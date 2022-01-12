@@ -7,6 +7,5 @@ namespace CommonLayer.Model
     public class LabelClass
     {
         public string labelName { get; set; }
-
     }
 }

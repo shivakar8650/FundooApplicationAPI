@@ -9,7 +9,6 @@ namespace BusinessLayer.Services
 {
     public class UserBL : IUserBL
     {
-
         IUserRL UserRL;
         public UserBL(IUserRL userRL)
         {
@@ -17,7 +16,6 @@ namespace BusinessLayer.Services
         }
         public RegisterResponse Registration(UserRegistration user)
         {
-           
             try
             {
                 return this.UserRL.Registration(user);
@@ -27,7 +25,6 @@ namespace BusinessLayer.Services
                 throw ex.InnerException;
             }
         }
-
         public IEnumerable<User> GetUserRegistrations()       //to get all registered data
         {
             return this.UserRL.GetUserRegistrations();
@@ -43,7 +40,6 @@ namespace BusinessLayer.Services
                 throw ex.InnerException;
             }
         }
-
         public bool SendResetLink(string email)
         {
             try
@@ -55,7 +51,6 @@ namespace BusinessLayer.Services
                 throw e.InnerException;
             }
         }
-
         public bool ResetPassword(ResetPassword reset , string email)
         {
             try

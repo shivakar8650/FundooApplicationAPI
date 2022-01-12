@@ -31,10 +31,7 @@ namespace FundooApp
         {
             Configuration = configuration;
         }
-
         public IConfiguration Configuration { get; }
-     
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -48,7 +45,6 @@ namespace FundooApp
             services.AddTransient<ILabelRL, LabelRL>();
             services.AddControllers().AddNewtonsoftJson(); ;
             services.AddDbContext<UserContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:UserDB"]));
-
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "FundooApp", Version = "v1" });
@@ -77,7 +73,6 @@ namespace FundooApp
             });
             var tokenKey = Configuration.GetValue<string>("Jwt:Key");
             var Key = Encoding.ASCII.GetBytes(tokenKey);
-
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -95,9 +90,7 @@ namespace FundooApp
                     ValidateAudience = false
                 };
             });
-
         }
-
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -107,7 +100,6 @@ namespace FundooApp
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FundooApp v1"));
             }
-
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthentication();
@@ -116,7 +108,6 @@ namespace FundooApp
             {
                 endpoints.MapControllers();
             });
-         
         }
     }
 }

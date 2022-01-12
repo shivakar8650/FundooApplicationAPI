@@ -36,12 +36,9 @@ namespace RepositoryLayer.Services
                 {
                     return true;
                 }
-                else
-                {
-                    return false;
-                }
+                return false;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw ;
             }
@@ -59,8 +56,6 @@ namespace RepositoryLayer.Services
             try
             {
                 Label label = this.context.LabelsTable.FirstOrDefault(x => x.labelName == labelName);
-                
-
                 if ( (label.labelName == labelName && label.NoteId == null))
                 {
                     context.LabelsTable.Attach(label);
@@ -83,7 +78,7 @@ namespace RepositoryLayer.Services
                     return false;
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw;
             }
@@ -109,9 +104,8 @@ namespace RepositoryLayer.Services
                 }
                 else
                     return false;
-
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 throw;
             }
@@ -135,9 +129,8 @@ namespace RepositoryLayer.Services
                 }
                 else
                     return false;
-
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw;
             }

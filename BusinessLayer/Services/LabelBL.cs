@@ -10,13 +10,11 @@ namespace BusinessLayer.Services
 {
     public class LabelBL : ILabelBL
     {
-
         ILabelRL LabelRL;
         public LabelBL(ILabelRL LabelRL)
         {
             this.LabelRL = LabelRL;
         }
-
         public bool AddNoteToExistingLabel(string labelName, long noteId, long userId)
         {
             try
@@ -28,7 +26,6 @@ namespace BusinessLayer.Services
                 throw;
             }
         }
-
         public bool CreateLabel(LabelClass labelInput, long UserId)
         {
             try
@@ -40,10 +37,8 @@ namespace BusinessLayer.Services
                 throw ;
             }
         }
-
         public bool DeleteLabel(string labelName)
         {
-
             try
             {
                 return this.LabelRL.DeleteLabel(labelName);
@@ -53,7 +48,6 @@ namespace BusinessLayer.Services
                 throw;
             }
         }
-
         public bool RemoveNoteFromLabel(string labelName, long noteId)
         { 
             try

@@ -8,8 +8,7 @@ namespace BusinessLayer.Interfaces
 {
     public  interface ICollaboratorBL
     {
-
         bool NoteCollaborate(NoteCollaborate collaborate,long UserId);
-        string RemoveCollaborate(NoteCollaborate collaborate, long userId);
+        bool RemoveCollaborate(NoteCollaborate collaborate);
     }
 }

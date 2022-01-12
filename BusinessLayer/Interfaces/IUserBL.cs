@@ -9,7 +9,6 @@ namespace BusinessLayer.Interfaces
     public interface IUserBL
     {
         public RegisterResponse Registration(UserRegistration user);
-
         IEnumerable<User> GetUserRegistrations();
         public UserResponse GetLogin(UserLogin User1);
         bool SendResetLink(string email);

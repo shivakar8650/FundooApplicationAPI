@@ -14,13 +14,11 @@ namespace FundooApp.Controllers
     [ApiController]
     public class LabelController : ControllerBase
     {
-
         private readonly ILabelBL LabelBL;
         public LabelController(ILabelBL LabelsBL)
         {
             this.LabelBL = LabelsBL;
         }
-
         [Authorize]
         [HttpPost]
         [Route("Create")]
@@ -29,7 +27,6 @@ namespace FundooApp.Controllers
             try
             {
                 long UserId = Convert.ToInt64(User.FindFirst("UserId").Value);
-
                 if (this.LabelBL.CreateLabel(labelInput, UserId))
                 {
                     return Ok(new { Success = true, message = "Label created Successfully !!" });
@@ -39,9 +36,9 @@ namespace FundooApp.Controllers
                     return BadRequest(new { Success = false, message = "Label already exists !!" });
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return this.BadRequest(new { success = false, message = e.InnerException });
+                return this.BadRequest(new { Status = false, Message = ex.Message, InnerException = ex.InnerException });
             }
         }
         [Authorize]
@@ -61,19 +58,17 @@ namespace FundooApp.Controllers
                     return BadRequest(new { Success = false, message = "Label doesn't exists !!" });
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return this.BadRequest(new { success = false, message = e.InnerException });
+                return this.BadRequest(new { Status = false, Message = ex.Message, InnerException = ex.InnerException });
             }
         }
-
         [Authorize]
         [HttpDelete]
         public IActionResult DeleteLabel(string LabelName)
         {
             try
             {
-            
                 if (this.LabelBL.DeleteLabel(LabelName))
                 {
                     return Ok(new { Success = true, message = $" {LabelName} delete successfully!!" });
@@ -83,12 +78,11 @@ namespace FundooApp.Controllers
                     return BadRequest(new { Success = false, message = "deletion failed!!" });
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return this.BadRequest(new { success = false, message = e.InnerException });
+                return this.BadRequest(new { Status = false, Message = ex.Message, InnerException = ex.InnerException });
             }
         }
-
         [Authorize]
         [HttpDelete]
         [Route("note")]
@@ -96,7 +90,6 @@ namespace FundooApp.Controllers
         {
             try
             {
-
                 if (this.LabelBL.RemoveNoteFromLabel(LabelName,NoteId))
                 {
                     return Ok(new { Success = true, message = $"Note {NoteId} is removed from {LabelName} successfully!!"});
@@ -106,9 +99,9 @@ namespace FundooApp.Controllers
                     return BadRequest(new { Success = false, message = "deletion failed!!" });
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return this.BadRequest(new { success = false, message = e.InnerException });
+                return this.BadRequest(new { Status = false, Message = ex.Message, InnerException = ex.InnerException });
             }
         }
     }

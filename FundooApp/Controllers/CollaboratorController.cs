@@ -22,44 +22,39 @@ namespace FundooApp.Controllers
         }
         [Authorize]
         [HttpPut]
-        [Route("AddUser")]
+        [Route("User")]
         public IActionResult CollaborateWithUser(NoteCollaborate collaborate)
         {
             try
             {
                 long UserId =Convert.ToInt64( User.FindFirst("UserId").Value);
-                if (this.ColabBL.NoteCollaborate(collaborate,UserId))
+                if (this.ColabBL.NoteCollaborate(collaborate, UserId))
                 {
                     return this.Ok(new { Status = true, Message = "Note Shared successfully" });
                 }
-
                 return this.BadRequest(new { Status = false, Message = "You Do not have permission" });
             }
             catch (Exception ex)
             {
-                return this.NotFound(new { Status = false, Message = ex.Message });
+                return this.BadRequest(new { Status = false, Message = ex.Message, InnerException = ex.InnerException });
             }
         }
-
         [Authorize]
-        [HttpPut]
-        [Route("RemoveUSer")]
+        [HttpDelete]
+        [Route("User")]
         public IActionResult RemoveCollaborateWithUser(NoteCollaborate collaborate)
         {
             try
             {
-                long UserId = Convert.ToInt64(User.FindFirst("UserId").Value);
-                 string response =this.ColabBL.RemoveCollaborate(collaborate, UserId);
-                if (response != null)
-                    return this.Ok(new {  Message = response });
+                if (this.ColabBL.RemoveCollaborate(collaborate))
+                    return this.Ok(new { Status = true, Message = "collaboration removed successfully" });
                 else
-                    return this.BadRequest(new { Status = false, Message = response });
+                    return this.BadRequest(new { Status = false, Message = "collaboration not removed" });
             }
             catch (Exception ex)
             {
-                return this.NotFound(new { Status = false, Message = ex.Message });
+                return this.BadRequest(new { Status = false, Message = ex.Message, InnerException = ex.InnerException });
             }
         }
-
     }
 }

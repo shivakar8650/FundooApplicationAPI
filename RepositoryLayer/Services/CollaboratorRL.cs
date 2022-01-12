@@ -16,7 +16,6 @@ namespace RepositoryLayer.Services
         {
             this.context = context;
         }
-
         /// <summary>
         /// 
         /// </summary>
@@ -32,8 +31,7 @@ namespace RepositoryLayer.Services
                 var Usertake = this.context.UserTable.FirstOrDefault(x => x.EmailId == collaborate.EmailId);
                 collaborator Newcollaborate = new collaborator();
                 if (note != null && Usertake.EmailId != null)
-                {
-                    Newcollaborate.NoteId = collaborate.NoteId;
+                {   Newcollaborate.NoteId = collaborate.NoteId;
                     Newcollaborate.EmailId = collaborate.EmailId;
                     Newcollaborate.UserId = UserId;
                     this.context.collabTable.Add(Newcollaborate);
@@ -43,14 +41,11 @@ namespace RepositoryLayer.Services
                 {
                     return true;
                 }
-                else
-                {
-                    return false;
-                }
+                return false;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ;
+                throw;
             }
         }
         /// <summary>
@@ -59,38 +54,24 @@ namespace RepositoryLayer.Services
         /// <param name="collaborate"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public string RemoveCollaborate(NoteCollaborate collaborate, long userId)
+        public bool RemoveCollaborate(NoteCollaborate collaborate)
         {
             try
             {
-                var note = this.context.NoteTable.FirstOrDefault(x => x.NoteId == collaborate.NoteId && x.Id == userId);
-                var Usertake = this.context.UserTable.FirstOrDefault(x => x.EmailId == collaborate.EmailId);
-                if (note != null && Usertake.EmailId != null)
-                {
-                    collaborator UserRemoved = this.context.collabTable.FirstOrDefault(x => x.EmailId == collaborate.EmailId && x.NoteId == collaborate.NoteId);
-                    if(UserRemoved !=null)
-                    this.context.collabTable.Remove(UserRemoved);
-
-                    int result = this.context.SaveChanges();
-                    if (result > 0)
-                    {
-                        return "removed Collaboration";
-                    }
-                    else
-                    {
-                        return "this note is not collaborate with user. ";
-                    }
-                }
-                else
-                {
-                    return "Either this User not exist or you have no permission to Collaborate this Note" ;
-                }
+              collaborator UserRemoved = this.context.collabTable.FirstOrDefault(x => x.EmailId == collaborate.EmailId && x.NoteId == collaborate.NoteId);
+              if(UserRemoved !=null)
+              this.context.collabTable.Remove(UserRemoved);
+              int result = this.context.SaveChanges();
+              if (result > 0)
+              {
+                return true;
+              }
+                return false;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
-
         }
     }
 }

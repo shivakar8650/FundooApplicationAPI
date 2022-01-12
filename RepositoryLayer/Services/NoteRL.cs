@@ -1,5 +1,8 @@
 ﻿using CommonLayer.Model;
-
+using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using RepositoryLayer.Context;
 using RepositoryLayer.Enitity;
 using RepositoryLayer.Interfaces;
@@ -7,17 +10,25 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data.Entity;
 
 namespace RepositoryLayer.Services
 {
     public class NoteRL : INoteRL
     {
-        readonly UserContext context;  
-        public NoteRL(UserContext context)
+        readonly UserContext context;
+        IConfiguration _config;
+        public NoteRL(UserContext context, IConfiguration config)
         {
             this.context = context;
+            _config = config;
         }
-
+        /// <summary>
+        /// to create new note
+        /// </summary>
+        /// <param name="notes"></param>
+        /// <param name="UserId"></param>
+        /// <returns></returns>
        public bool GenerateNote(UserNote notes,long UserId)
         {
             try
@@ -41,22 +52,28 @@ namespace RepositoryLayer.Services
                 {
                     return true;
                 }
-                else
-                {
-                    return false;
-                }
+                return false;
             }
-            catch (Exception e)
+            catch (Exception )
             {
-                throw e.InnerException;
+                throw ;
             }
         }
-
+        /// <summary>
+        /// to get all notes
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<Note> GetAllNotes()
         {
             return context.NoteTable.ToList();
         }
-
+        /// <summary>
+        /// update the note 
+        /// </summary>
+        /// <param name="notes"></param>
+        /// <param name="UserId"></param>
+        /// <param name="Noteid"></param>
+        /// <returns></returns>
         public UserNote UpdateNotes(UserNote notes,long  UserId, long Noteid)
         {
             try
@@ -73,51 +90,47 @@ namespace RepositoryLayer.Services
                     UpdateNote.IsPin = notes.IsPin;
                     UpdateNote.IsTrash = notes.IsTrash;
                     UpdateNote.Createat = notes.Createat;
-
-
                 }
                 var result = this.context.SaveChanges();
                 if (result > 0)
                 {
                     return notes;
                 }
-                else
-                {
-                    return default;
-                }
+                return null;
             }
-            catch(Exception e)
+            catch(Exception )
             {
-                throw e.InnerException;
+                throw ;
             }
-
-
         }
+        /// <summary>
+        /// Delete the note 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public bool DeleteNotes(long id)
         {
             try
             {
                 var ValidNote = this.context.NoteTable.Where(Y => Y.NoteId == id).FirstOrDefault();
-              
-                //Deleting user details from the database user table
                 this.context.NoteTable.Remove(ValidNote);
-
                 int result = this.context.SaveChanges();
                 if (result > 0)
                 {
                     return true;
                 }
-                else
-                {
-                    return false;
-                }
+                return false;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                throw e.InnerException;
+                throw;
             }
         }
-
+        /// <summary>
+        /// pin OR unpin the note.
+        /// </summary>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
         public string PinORUnPinNote(long noteid)
         {
             try
@@ -135,14 +148,17 @@ namespace RepositoryLayer.Services
                     this.context.SaveChanges();
                     return "Note is Pinned";
                 }
-                
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex.InnerException;
+                throw ;
             }
         }
-
+        /// <summary>
+        /// Archive OR UnArchive the Note.
+        /// </summary>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
         public string ArchiveORUnarchiveNote(long noteid)
         {
             try
@@ -161,11 +177,16 @@ namespace RepositoryLayer.Services
                     return "Note Archived";
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new Exception(ex.Message);
+                throw ;
             }
         }
+        /// <summary>
+        /// Trash Or Restore Note.
+        /// </summary>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
         public string TrashOrRestoreNote(long noteid)
         {
             try
@@ -184,13 +205,18 @@ namespace RepositoryLayer.Services
                     return "Note is Trash";
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new Exception(ex.Message);
+                throw;
             }
 
         }
-
+        /// <summary>
+        /// Color note Note
+        /// </summary>
+        /// <param name="noteId"></param>
+        /// <param name="color"></param>
+        /// <returns></returns>
         public string ColorNote(long noteId, string color)
         {
             try
@@ -209,17 +235,59 @@ namespace RepositoryLayer.Services
                     return "choose different color";
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new Exception(ex.Message);
+                throw ;
             }
         }
-
+        /// <summary>
+        /// Get all note of user.
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <returns></returns>
         public IEnumerable<Note> GetAllNotesOfUser(long UserId)
         {
             return context.NoteTable.Where(Y => Y.Id == UserId).ToList();
         }
-    }
-    
+        /// <summary>
+        /// upload the inage.
+        /// </summary>
+        /// <param name="noteId"></param>
+        /// <param name="image"></param>
+        /// <returns></returns>
+        public bool UploadImage(long noteId, IFormFile image)
+        {
+            try
+            {
+                var notes = this.context.NoteTable.FirstOrDefault(x => x.NoteId == noteId);
+                if (notes != null)
+                {
+                    Account account = new Account 
+                    (
+                    _config["CloudinaryAccount:CloudName"],
+                    _config["CloudinaryAccount:ApiKey"],
+                    _config["CloudinaryAccount:ApiSecret"]
+                    );
+                    var path = image.OpenReadStream();
+                    Cloudinary cloudinary = new Cloudinary(account);
+                    ImageUploadParams uploadParams = new ImageUploadParams()
+                    {
+                        File = new FileDescription(image.FileName, path)
+                    };
+                    var uploadResult = cloudinary.Upload(uploadParams);
+                    context.NoteTable.Attach(notes);
+                    notes.Image = uploadResult.Url.ToString();
+                    context.SaveChanges();
+                    return true;
+                }
+                else
+                return false;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        } 
+    }   
 }
-    
+

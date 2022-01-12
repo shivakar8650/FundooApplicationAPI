@@ -16,10 +16,8 @@ namespace RepositoryLayer.Services
 {
     public class UserRL : IUserRL
     {
-     
         readonly UserContext context;
         private readonly IConfiguration _config;
-
         public UserRL(UserContext context, IConfiguration config)
         {
             this.context = context;
@@ -42,12 +40,8 @@ namespace RepositoryLayer.Services
                 newUser.EmailId = user.EmailId;
                 newUser.Createdat = DateTime.Now;
                 newUser.Modified = DateTime.Now;
-
-
-
                 //adding user details to the database user table 
                 this.context.UserTable.Add(newUser);
-
                 int result = this.context.SaveChanges();
                 if (result > 0)
                 {
@@ -59,11 +53,7 @@ namespace RepositoryLayer.Services
 
                     return response;
                 }
-                else
-                {
-                    return default;
-                }
-
+                return default;
             }
             catch (Exception ex)
             {
@@ -71,9 +61,13 @@ namespace RepositoryLayer.Services
             }
 
         }
-
+        /// <summary>
+        /// Get the login info
+        /// </summary>
+        /// <param name="User1"></param>
+        /// <returns></returns>
         public UserResponse GetLogin(UserLogin User1 )  //to check login and password
-        {
+        {  
             try
             {
                 User ValidLogin = this.context.UserTable.Where(X => X.EmailId == User1.EmailId).FirstOrDefault();
@@ -92,24 +86,27 @@ namespace RepositoryLayer.Services
 
                     return loginResponse;
                 }
-                else
-                {
-                    return null;
-                }
+                   return null;   
             }
             catch (ArgumentException ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-
-
+        /// <summary>
+        /// get all user registration
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<User> GetUserRegistrations()
         {
             return context.UserTable.ToList();
         }
-
-
+        /// <summary>
+        /// Generate JWT token
+        /// </summary>
+        /// <param name="EmailId"></param>
+        /// <param name="UserId"></param>
+        /// <returns></returns>
         private string GenerateJWTToken(string EmailId, long UserId)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
@@ -124,21 +121,11 @@ namespace RepositoryLayer.Services
               signingCredentials: credentials);
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-
-        /*     private string GenerateJWTToken(string EmailId)
-         {
-             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
-               _config["Jwt:Issuer"],
-               null,
-               expires: DateTime.Now.AddMinutes(20),
-               signingCredentials: credentials);
-
-             return new JwtSecurityTokenHandler().WriteToken(token);
-         }*/
-
+        /// <summary>
+        /// Method to encrypt password.
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public string encryptpass(string password)
         {
             string msg = "";
@@ -147,6 +134,11 @@ namespace RepositoryLayer.Services
             msg = Convert.ToBase64String(encode);
             return msg;
         }
+        /// <summary>
+        /// method to decrypt password.
+        /// </summary>
+        /// <param name="encryptpwd"></param>
+        /// <returns></returns>
         private string Decryptpass(string encryptpwd)
         {
             string decryptpwd = string.Empty;
@@ -159,39 +151,38 @@ namespace RepositoryLayer.Services
             decryptpwd = new String(decoded_char);
             return decryptpwd;
         }
-
+        /// <summary>
+        /// send reset link.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
         public bool SendResetLink(string email)
         {
             User ValidLogin = this.context.UserTable.Where(X => X.EmailId == email).FirstOrDefault();
             if (ValidLogin.EmailId != null)
             {
                 var token = GenerateJWTToken(ValidLogin.EmailId, ValidLogin.Id);
-
                 new MsmqOperation().Sender(token);
                 return true;
-
-
-
-            }
-            return false;
+             }
+             return false;
         }
-
+        /// <summary>
+        /// Reset the password link.
+        /// </summary>
+        /// <param name="reset"></param>
+        /// <param name="email"></param>
+        /// <returns></returns>
         public bool ResetPassword(ResetPassword reset, string email)
         {
-
             var ValidLogin = this.context.UserTable.SingleOrDefault(x => x.EmailId == email);
             if (ValidLogin.EmailId != null)
-            {
-                context.UserTable.Attach(ValidLogin); 
+            { context.UserTable.Attach(ValidLogin); 
                 ValidLogin.Password = encryptpass(reset.ConfirmPassword); 
                 context.SaveChanges();
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
-    }
-    
+    }  
 }

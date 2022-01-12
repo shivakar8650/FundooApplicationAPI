@@ -23,4 +23,3 @@ namespace RepositoryLayer.Enitity
      
     }
 }
-/*EntityFramework\Add - Migration*/
