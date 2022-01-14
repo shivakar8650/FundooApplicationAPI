@@ -23,7 +23,7 @@ namespace RepositoryLayer.Services
         /// <param name="labelInput"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public bool CreateLabel(LabelClass labelInput, long userId)
+        public labelResponse CreateLabel(LabelClass labelInput, long userId)
         {
             try
             {
@@ -32,11 +32,14 @@ namespace RepositoryLayer.Services
                 NewLabel.UserId = userId;
                 this.context.LabelsTable.Add(NewLabel);               
                 int result = this.context.SaveChanges();
+                Label label = this.context.LabelsTable.FirstOrDefault(Y => Y.labelName == labelInput.labelName);
                 if (result > 0)
                 {
-                    return true;
+                    labelResponse Response = new labelResponse();
+                     return ReturnResponse(Response, label);
+                   
                 }
-                return false;
+                return null;
             }
             catch (Exception)
             {
@@ -51,17 +54,18 @@ namespace RepositoryLayer.Services
         /// <param name="noteId"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public bool AddNoteToExistingLabel(string labelName, long noteId, long userId)
+        public labelResponse AddNoteToExistingLabel(string labelName, long noteId, long userId)
         {
             try
             {
                 Label label = this.context.LabelsTable.FirstOrDefault(x => x.labelName == labelName);
+                labelResponse Response = new labelResponse();
                 if ( (label.labelName == labelName && label.NoteId == null))
                 {
                     context.LabelsTable.Attach(label);
                     label.NoteId = noteId;
                     context.SaveChanges();
-                    return true;
+                    return ReturnResponse(Response, label);
                 }
                 else if (label.labelName == labelName && label.NoteId != null)
                 {
@@ -71,11 +75,12 @@ namespace RepositoryLayer.Services
                     NewLabel.NoteId = noteId;
                     this.context.LabelsTable.Add(NewLabel);
                     int result = this.context.SaveChanges();
-                    return true;
+                    Label label1 = this.context.LabelsTable.FirstOrDefault(Y => Y.labelName == labelName && Y.NoteId == noteId);
+                    return ReturnResponse(Response, label1);
                 }
                 else
                 {
-                    return false;
+                    return null;
                 }
             }
             catch (Exception)
@@ -134,6 +139,20 @@ namespace RepositoryLayer.Services
             {
                 throw;
             }
+        }
+        /// <summary>
+        /// method to return response
+        /// </summary>
+        /// <param name="Response"></param>
+        /// <param name="label"></param>
+        /// <returns></returns>
+        public labelResponse ReturnResponse(labelResponse Response, Label label)
+        {
+            Response.labelName = label.labelName;
+            Response.labelID = label.labelID;
+            Response.NoteId = label.NoteId;
+            Response.UserId = label.UserId;
+            return Response;
         }
     }
 }

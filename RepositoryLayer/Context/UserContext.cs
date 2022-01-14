@@ -5,7 +5,8 @@
     using System.Collections.Generic;
     using System.Text;
     using RepositoryLayer.Enitity;
-    public class UserContext: DbContext
+
+    public class UserContext:DbContext
     {
         public UserContext(DbContextOptions options) : base(options)
         {

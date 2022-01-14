@@ -15,7 +15,7 @@ namespace BusinessLayer.Services
         {
             this.LabelRL = LabelRL;
         }
-        public bool AddNoteToExistingLabel(string labelName, long noteId, long userId)
+        public labelResponse AddNoteToExistingLabel(string labelName, long noteId, long userId)
         {
             try
             {
@@ -26,7 +26,7 @@ namespace BusinessLayer.Services
                 throw;
             }
         }
-        public bool CreateLabel(LabelClass labelInput, long UserId)
+        public labelResponse CreateLabel(LabelClass labelInput, long UserId)
         {
             try
             {

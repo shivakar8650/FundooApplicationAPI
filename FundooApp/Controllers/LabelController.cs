@@ -27,9 +27,10 @@ namespace FundooApp.Controllers
             try
             {
                 long UserId = Convert.ToInt64(User.FindFirst("UserId").Value);
-                if (this.LabelBL.CreateLabel(labelInput, UserId))
+                var response = this.LabelBL.CreateLabel(labelInput, UserId);
+                if(response != null)
                 {
-                    return Ok(new { Success = true, message = "Label created Successfully !!" });
+                    return Ok(new { Success = true, message = "Label created Successfully !!", data = response});
                 }
                 else
                 {
@@ -49,9 +50,10 @@ namespace FundooApp.Controllers
             try
             {
                 long UserId = Convert.ToInt64(User.FindFirst("UserId").Value);
-                if (this.LabelBL.AddNoteToExistingLabel(LabelName, noteId, UserId))
+                var response = this.LabelBL.AddNoteToExistingLabel(LabelName, noteId, UserId);
+                if (response!=null)
                 {
-                    return Ok(new { Success = true, message = $"Note added  Successfully to {LabelName} !!" });
+                    return Ok(new { Success = true, message = $"Note added  Successfully to {LabelName} !!",data = response });
                 }
                 else
                 {
