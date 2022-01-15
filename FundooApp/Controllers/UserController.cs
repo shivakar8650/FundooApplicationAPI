@@ -4,8 +4,17 @@ using BusinessLayer.Interfaces;
 using CommonLayer.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RepositoryLayer.Enitity;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
+using RepositoryLayer.Context;
+using System.Text;
+using Newtonsoft.Json;
 
 namespace FundooApp.Controllers
 {
@@ -14,9 +23,16 @@ namespace FundooApp.Controllers
     public class UserController : ControllerBase
     {
         IUserBL BL;
-        public UserController(IUserBL BL)
+        private readonly IMemoryCache memoryCache;
+        private readonly UserContext context;
+        private readonly IDistributedCache distributedCache;
+       
+        public UserController(IUserBL BL, IMemoryCache memoryCache, UserContext context, IDistributedCache distributedCache)
         {
             this.BL = BL;
+            this.memoryCache = memoryCache;
+            this.distributedCache = distributedCache;
+            this.context = context;
         }
         [HttpPost]
         public IActionResult UserRegistration(UserRegistration user)
@@ -122,6 +138,32 @@ namespace FundooApp.Controllers
             {
                 return this.BadRequest(new { Status = false, Message = ex.Message, InnerException = ex.InnerException });
             }
+        }
+        [Authorize]
+        [HttpGet("redis")]
+        public async Task<IActionResult> GetAllUserUsingRedisCache()
+        {
+         //   long UserId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserId").Value);
+            var CacheKey = "UserDetailsList";
+            string serializedUserList;
+            IEnumerable<User> UserDetailsList = new List<User>();
+            var redisUserList = await distributedCache.GetAsync(CacheKey);
+            if (redisUserList != null)
+            {
+                serializedUserList = Encoding.UTF8.GetString(redisUserList);
+                UserDetailsList = JsonConvert.DeserializeObject<List<User>>(serializedUserList);
+            }
+            else
+            {
+                UserDetailsList = (IEnumerable<User>)this.BL.GetUserRegistrations();
+                serializedUserList = JsonConvert.SerializeObject(UserDetailsList);
+                redisUserList = Encoding.UTF8.GetBytes(serializedUserList);
+                var options = new DistributedCacheEntryOptions()
+                 .SetAbsoluteExpiration(DateTime.Now.AddMinutes(10))
+                 .SetSlidingExpiration(TimeSpan.FromMinutes(2));
+                await distributedCache.SetAsync(CacheKey, redisUserList, options);
+            }
+            return Ok(UserDetailsList);
         }
     }
 }
