@@ -74,11 +74,11 @@ namespace RepositoryLayer.Services
         /// <param name="UserId"></param>
         /// <param name="Noteid"></param>
         /// <returns></returns>
-        public UserNote UpdateNotes(UserNote notes,long  UserId, long Noteid)
+        public UpdateNotes UpdateNotes(UpdateNotes notes,long  UserId)
         {
             try
             {
-                var UpdateNote = this.context.NoteTable.Where(Y => Y.NoteId == Noteid).FirstOrDefault();
+                var UpdateNote = this.context.NoteTable.Where(Y => Y.NoteId == notes.NoteId).FirstOrDefault();
                 if (UpdateNote != null && UpdateNote.Id == UserId)
                 {
                     UpdateNote.Title = notes.Title;
@@ -94,7 +94,17 @@ namespace RepositoryLayer.Services
                 var result = this.context.SaveChanges();
                 if (result > 0)
                 {
-                    return notes;
+                    UpdateNotes responsenote = new UpdateNotes();
+                    responsenote.Title = UpdateNote.Title;
+                    responsenote.Message = UpdateNote.Message;
+                    responsenote.Remainder = UpdateNote.Remainder;
+                    responsenote.Color = UpdateNote.Color;
+                    responsenote.Image = UpdateNote.Image;
+                    responsenote.IsArchive = UpdateNote.IsArchive;
+                    responsenote.IsPin = UpdateNote.IsPin;
+                    responsenote.IsTrash = UpdateNote.IsTrash;
+                    responsenote.Createat = UpdateNote.Createat;
+                    return responsenote;
                 }
                 return null;
             }
@@ -108,11 +118,11 @@ namespace RepositoryLayer.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public bool DeleteNotes(long id)
+        public bool DeleteNotes(takeNoteId note)
         {
             try
             {
-                var ValidNote = this.context.NoteTable.Where(Y => Y.NoteId == id).FirstOrDefault();
+                var ValidNote = this.context.NoteTable.Where(Y => Y.NoteId == note.NoteId).FirstOrDefault();
                 this.context.NoteTable.Remove(ValidNote);
                 int result = this.context.SaveChanges();
                 if (result > 0)
@@ -159,11 +169,11 @@ namespace RepositoryLayer.Services
         /// </summary>
         /// <param name="noteid"></param>
         /// <returns></returns>
-        public string ArchiveORUnarchiveNote(long noteid)
+        public string ArchiveORUnarchiveNote(takeNoteId note)
         {
             try
             {
-                var Note = this.context.NoteTable.FirstOrDefault(x => x.NoteId == noteid);
+                var Note = this.context.NoteTable.FirstOrDefault(x => x.NoteId == note.NoteId);
                 if (Note.IsArchive == true)
                 {
                     Note.IsArchive = false;
@@ -187,11 +197,11 @@ namespace RepositoryLayer.Services
         /// </summary>
         /// <param name="noteid"></param>
         /// <returns></returns>
-        public string TrashOrRestoreNote(long noteid)
+        public string TrashOrRestoreNote(takeNoteId note)
         {
             try
             {
-                var Note = this.context.NoteTable.FirstOrDefault(x => x.NoteId == noteid);
+                var Note = this.context.NoteTable.FirstOrDefault(x => x.NoteId == note.NoteId);
                 if (Note.IsTrash == true)
                 {
                     Note.IsTrash = false;
@@ -217,21 +227,19 @@ namespace RepositoryLayer.Services
         /// <param name="noteId"></param>
         /// <param name="color"></param>
         /// <returns></returns>
-        public string ColorNote(long noteId, string color)
+        public string ColorNote(ChangeColorNote note)
         {
             try
             {
-                var Note = this.context.NoteTable.FirstOrDefault(x => x.NoteId == noteId);
-                if (Note.Color != color)
+                var Note = this.context.NoteTable.FirstOrDefault(x => x.NoteId == note.NoteId);
+                if (Note.Color != note.Color)
                 {
-                    Note.Color = color;
+                    Note.Color = note.Color;
                     this.context.SaveChanges();
                     return "Note color is changed.";
                 }
                 else
                 {
-                    Note.IsTrash = true;
-                    this.context.SaveChanges();
                     return "choose different color";
                 }
             }

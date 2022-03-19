@@ -40,7 +40,7 @@ namespace BusinessLayer.Services
                 throw ex.InnerException;
             }
         }
-        public bool SendResetLink(string email)
+        public bool SendResetLink(ForgetPassword email)
         {
             try
             {

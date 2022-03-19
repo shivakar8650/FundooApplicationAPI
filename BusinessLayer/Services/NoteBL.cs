@@ -16,33 +16,33 @@ namespace BusinessLayer.Services
         {
             this.NoteRL = noteRL;
         }
-        public string ArchiveORUnarchiveNote(long noteid)
+        public string ArchiveORUnarchiveNote(takeNoteId note)
         {
             try
             {
-                return this.NoteRL.ArchiveORUnarchiveNote(noteid);
+                return this.NoteRL.ArchiveORUnarchiveNote(note);
             }
             catch (Exception)
             {
                 throw;
             }
         }
-        public string ColorNote(long noteId, string color)
+        public string ColorNote(ChangeColorNote note)
         {
             try
             {
-                return this.NoteRL.ColorNote(noteId, color);
+                return this.NoteRL.ColorNote(note);
             }
             catch (Exception)
             {
                 throw;
             }
         }
-        public bool DeleteNotes(long Id)
+        public bool DeleteNotes(takeNoteId note)
         {
             try
             {
-                return this.NoteRL.DeleteNotes(Id);
+                return this.NoteRL.DeleteNotes(note);
             }
             catch (Exception)
             {
@@ -80,11 +80,11 @@ namespace BusinessLayer.Services
                 throw ;
             }
         }
-        public string TrashOrRestoreNote(long noteid)
+        public string TrashOrRestoreNote(takeNoteId note)
         {
             try
             {
-                return this.NoteRL.TrashOrRestoreNote(noteid);
+                return this.NoteRL.TrashOrRestoreNote(note);
             }
             catch (Exception )
             {
@@ -92,11 +92,11 @@ namespace BusinessLayer.Services
             }
         }
 
-        public UserNote UpdateNotes(UserNote notes, long UserId, long Noteid)
+        public UpdateNotes UpdateNotes(UpdateNotes notes, long UserId)
         {
             try
             {
-                return this.NoteRL.UpdateNotes(notes,UserId,Noteid);
+                return this.NoteRL.UpdateNotes(notes,UserId);
             }
             catch (Exception )
             {

@@ -11,12 +11,12 @@ namespace RepositoryLayer.Interfaces
     {
         public bool GenerateNote(UserNote notes,long UserId);
         IEnumerable<Note> GetAllNotes();
-        UserNote UpdateNotes(UserNote notes,long UserId,long  Noteid);
-        bool DeleteNotes(long id);
+        UpdateNotes UpdateNotes(UpdateNotes notes,long UserId);
+        bool DeleteNotes(takeNoteId note);
         string PinORUnPinNote(long noteid);
-        string TrashOrRestoreNote(long noteid);
-        string ColorNote(long noteId, string color);
-        string ArchiveORUnarchiveNote(long noteid);
+        string TrashOrRestoreNote(takeNoteId note);
+        string ColorNote(ChangeColorNote note);
+        string ArchiveORUnarchiveNote(takeNoteId note);
         IEnumerable<Note> GetAllNotesOfUser(long UserId);
         bool UploadImage(long noteId, IFormFile image);
     }

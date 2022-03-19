@@ -9,7 +9,7 @@ namespace RepositoryLayer.Interfaces
         public RegisterResponse Registration(UserRegistration User);
         public UserResponse GetLogin(UserLogin User1);
         IEnumerable<User> GetUserRegistrations();
-        bool SendResetLink(string email);
+        bool SendResetLink(ForgetPassword email);
         bool ResetPassword(ResetPassword reset,string email);
     }
 }

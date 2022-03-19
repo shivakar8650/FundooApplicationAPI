@@ -11,7 +11,7 @@ namespace BusinessLayer.Interfaces
         public RegisterResponse Registration(UserRegistration user);
         IEnumerable<User> GetUserRegistrations();
         public UserResponse GetLogin(UserLogin User1);
-        bool SendResetLink(string email);
+        bool SendResetLink(ForgetPassword email);
         bool ResetPassword(ResetPassword reset,string email);
     }
 }

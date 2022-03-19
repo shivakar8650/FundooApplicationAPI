@@ -15,11 +15,13 @@ using System.Threading.Tasks;
 using RepositoryLayer.Context;
 using System.Text;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Cors;
 
 namespace FundooApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+  /*  [EnableCors("AllowOrigin")]*/
     public class UserController : ControllerBase
     {
         IUserBL BL;
@@ -95,9 +97,9 @@ namespace FundooApp.Controllers
         }
         [HttpPost]
         [Route("forgetPassword")]
-        public IActionResult ForgetPassword(string email)
+        public IActionResult ForgetPassword(ForgetPassword email)
         {
-            if (string.IsNullOrEmpty(email))
+            if (string.IsNullOrEmpty(email.EmailId))
             {
                 return BadRequest("Email should not be null or empty");
             }

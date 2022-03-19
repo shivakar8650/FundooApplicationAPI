@@ -45,7 +45,7 @@ namespace FundooApp.Controllers
                 }
                 else
                 {
-                    return this.BadRequest(new { Success = false, message = "New Node creation unsuccessful" });
+                    return this.BadRequest(new { Success = false, message = "New Note creation unsuccessful" });
                 }
             }
             catch (Exception ex)
@@ -92,16 +92,16 @@ namespace FundooApp.Controllers
             }
         }
         [Authorize]
-        [HttpPut("{Noteid}")]
-        public IActionResult UpdateNotes(UserNote notes, long Noteid)
+        [HttpPut]
+        public IActionResult UpdateNotes(UpdateNotes notes)
         {
             long UserId = Convert.ToInt64(User.FindFirst("UserId").Value);
             try
             {
-                UserNote response = noteBL.UpdateNotes(notes, UserId, Noteid);
+                UpdateNotes response = noteBL.UpdateNotes(notes, UserId);
                 if (response != null)
                 {
-                    return this.Ok(new { Success = true, message = " Registration Deleted", Updated = response });
+                    return this.Ok(new { Success = true, message = " note updated successfully!", Updated = response });
                 }
                 else
                 {
@@ -115,11 +115,11 @@ namespace FundooApp.Controllers
         }
    
         [HttpDelete]
-        public IActionResult DeleteNotes(long NotesId)
+        public IActionResult DeleteNotes(takeNoteId note)
         {
             try
             {
-                if (this.noteBL.DeleteNotes(NotesId))
+                if (this.noteBL.DeleteNotes(note))
                 {
                     return this.Ok(new { Success = true, message = "Deleted successfully.." });
                 }
@@ -153,11 +153,11 @@ namespace FundooApp.Controllers
         }
         [HttpPut]
         [Route("Archive")]
-        public IActionResult ArchiveORUnarchiveNote(long Noteid)
+        public IActionResult ArchiveORUnarchiveNote(takeNoteId note)
         {
             try
             {
-                var result = this.noteBL.ArchiveORUnarchiveNote(Noteid);
+                var result = this.noteBL.ArchiveORUnarchiveNote(note);
                 if (result != null)
                 {
                     return this.Ok(new { Status = true, Message = result });
@@ -171,11 +171,11 @@ namespace FundooApp.Controllers
         }
         [HttpPut]
         [Route("Trash")]
-        public IActionResult TrashOrRestoreNote(long Noteid)
+        public IActionResult TrashOrRestoreNote(takeNoteId note)
         {
             try
             {
-                var result = this.noteBL.TrashOrRestoreNote(Noteid);
+                var result = this.noteBL.TrashOrRestoreNote(note);
                 if (result != null)
                 {
                     return this.Ok(new { Status = true, Message = result});
@@ -190,11 +190,11 @@ namespace FundooApp.Controllers
         }
         [HttpPut]
         [Route("Color")]
-        public IActionResult ChangeColor(long NoteId, string color)
+        public IActionResult ChangeColor(ChangeColorNote note)
         {
             try
             {
-                var message = this.noteBL.ColorNote(NoteId, color);
+                var message = this.noteBL.ColorNote(note);
                 if (message.Equals("New Color has set to this note !"))
                 {
                     return this.Ok(new { Status = true, Message = message});

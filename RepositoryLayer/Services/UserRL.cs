@@ -117,7 +117,7 @@ namespace RepositoryLayer.Services
            };
             var token = new JwtSecurityToken(_config["Jwt:Issuer"], EmailId,
               claims,
-              expires: DateTime.Now.AddMinutes(20),
+              expires: DateTime.Now.AddMinutes(50),
               signingCredentials: credentials);
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
@@ -156,9 +156,9 @@ namespace RepositoryLayer.Services
         /// </summary>
         /// <param name="email"></param>
         /// <returns></returns>
-        public bool SendResetLink(string email)
+        public bool SendResetLink(ForgetPassword email)
         {
-            User ValidLogin = this.context.UserTable.Where(X => X.EmailId == email).FirstOrDefault();
+            User ValidLogin = this.context.UserTable.Where(X => X.EmailId == email.EmailId).FirstOrDefault();
             if (ValidLogin.EmailId != null)
             {
                 var token = GenerateJWTToken(ValidLogin.EmailId, ValidLogin.Id);
